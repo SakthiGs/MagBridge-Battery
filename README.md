@@ -2,8 +2,8 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Data license: CC-BY-4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20260147-blue)](https://doi.org/10.5281/zenodo.20260147)
+<!-- arXiv badge will appear once the preprint is live (currently in moderation) -->
 
 This is the code repository for **MagBridge-Battery: A Synthetic Bridge Dataset for Li-ion Magnetometry and State-of-Health Diagnostics** by Sakthi Prabhu Gunasekar and Prasanna Kumar Rangarajan (2026).
 
