@@ -1,0 +1,83 @@
+MagBridge-Battery v1.0 — Upstream OSF Source Notice
+=====================================================
+
+This repository's bridge implementation incorporates aggregate statistical
+artifacts derived from the Mohammadi–Jerschow OSF battery magnetometry
+archive:
+
+    Mohammadi, M. and Jerschow, A. "Battery Magnetometry Data 2019–2020."
+    Open Science Framework, 2020. DOI: 10.17605/OSF.IO/CW8ZV.
+    https://osf.io/cw8zv/
+
+Associated peer-reviewed paper:
+
+    Hu, Y., Iwata, G. Z., Mohammadi, M., Silletta, E. V., Wickenbrock, A.,
+    Blanchard, J. W., Budker, D., and Jerschow, A. "Sensitive magnetometry
+    reveals inhomogeneities in charge storage and weak transient internal
+    currents in Li-ion cells." PNAS 117(20): 10667–10672, 2020.
+    DOI: 10.1073/pnas.1917172117.
+
+
+WHAT IS DERIVED FROM OSF IN THIS REPOSITORY
+--------------------------------------------
+
+The files at code/bridge/data/v1.0/ contain *derived* statistical artifacts
+from the OSF archive, not raw OSF signal data:
+
+    - anchor_stats.npz     Per-voltage-anchor mean trajectories and
+                           per-channel variances, computed across the 41
+                           OSF scan positions at each of the 5 voltage
+                           anchors. Compresses 205 raw OSF samples into
+                           per-anchor aggregates.
+
+    - lda_fit.npz          Fitted Linear Discriminant Analysis model
+                           parameters (means, covariances, projection
+                           weights), trained on OSF samples with voltage
+                           anchors as class labels.
+
+    - qrec_embeddings.npz  171-dimensional MagBridge-Embed (quantum
+                           reservoir) embeddings of the 205 OSF samples.
+                           Each embedding compresses the raw length-100
+                           six-channel signal to a 171-D vector.
+
+These artifacts cannot be inverted back to the raw OSF signals.
+
+
+RAW UPSTREAM FILES ARE NOT REDISTRIBUTED
+-----------------------------------------
+
+The raw OSF magnetic-scan files (per-sample signal sequences and sample
+metadata) are NOT included in this repository. Users who wish to regenerate
+the MagBridge-Battery dataset from scratch, or who need raw OSF signals for
+their own work, should obtain the raw files directly from the OSF archive:
+
+    https://osf.io/cw8zv/
+
+and cite the original authors per the citations above.
+
+
+UPSTREAM LICENSE STATUS
+-----------------------
+
+The OSF project page lists "No License" at the time of MagBridge-Battery
+v1.0 release. The data archive is publicly accessible and associated with
+a peer-reviewed publication. In correspondence dated 2026-05-16, the
+principal investigator Prof. Alexej Jerschow granted MagBridge-Battery
+explicit permission for derivative use with citation, with co-authors
+Geoffrey Iwata, Yinan Hu, and Dmitry Budker copied. The derived statistical
+artifacts shipped in this repository are released under Apache-2.0 as part
+of the MagBridge-Battery v1.0 code release.
+
+
+HOW TO CITE
+-----------
+
+If you use the MagBridge-Battery bridge code (which embeds OSF-derived
+aggregates), you should cite:
+
+  1. The Hu et al. PNAS 2020 paper (the upstream science)
+  2. The OSF DOI 10.17605/OSF.IO/CW8ZV (the underlying data archive)
+  3. The MagBridge-Battery paper (this work)
+  4. The MagBridge-Battery dataset DOI 10.5281/zenodo.20260147
+
+See docs/CITING.md for copy-paste BibTeX.

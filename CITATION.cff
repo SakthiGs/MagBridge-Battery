@@ -1,0 +1,69 @@
+cff-version: 1.2.0
+message: >
+  If you use MagBridge-Battery in your work, please cite BOTH the paper
+  (primary citation) and the dataset DOI (for the data artifact specifically).
+  See CITING.md for full guidance.
+type: software
+title: "MagBridge-Battery"
+version: "1.0.0"
+date-released: 2026-05-17
+license: Apache-2.0
+repository-code: "https://github.com/SakthiGs/MagBridge-Battery"
+abstract: >
+  Reference implementation, benchmark suite, and paper source for
+  MagBridge-Battery v1.0 --- a synthetic dataset of 6,760 magnetic-field
+  signatures bridging the Mohammadi-Jerschow OSF magnetometry archive
+  with PulseBat electrochemical degradation labels for Li-ion cells.
+  The dataset itself is archived on Zenodo (see DOI below).
+keywords:
+  - battery
+  - lithium iron phosphate
+  - LFP
+  - magnetometry
+  - state of health
+  - SOH
+  - synthetic dataset
+  - benchmark
+authors:
+  - family-names: Gunasekar
+    given-names: Sakthi Prabhu
+    orcid: "https://orcid.org/0009-0006-0153-5674"
+  - family-names: Rangarajan
+    given-names: Prasanna Kumar
+    orcid: "https://orcid.org/0000-0001-6103-259X"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20260147"
+    description: "Zenodo DOI for the MagBridge-Battery v1.0 dataset."
+
+# Preferred citation: the PAPER (primary intellectual artifact).
+# GitHub renders this under the "Cite this repository" button.
+preferred-citation:
+  type: article
+  title: "MagBridge-Battery: A Synthetic Bridge Dataset for Li-ion Magnetometry and State-of-Health Diagnostics"
+  year: 2026
+  authors:
+    - family-names: Gunasekar
+      given-names: Sakthi Prabhu
+      orcid: "https://orcid.org/0009-0006-0153-5674"
+    - family-names: Rangarajan
+      given-names: Prasanna Kumar
+      orcid: "https://orcid.org/0000-0001-6103-259X"
+  journal: "arXiv preprint"
+  identifiers:
+    - type: other
+      value: "arXiv:XXXX.XXXXX"
+      description: "arXiv identifier for the associated paper; placeholder until arXiv moderation completes."
+
+# Also-cite: the DATASET DOI
+references:
+  - type: data
+    title: "MagBridge-Battery v1.0"
+    year: 2026
+    authors:
+      - family-names: Gunasekar
+        given-names: Sakthi Prabhu
+      - family-names: Rangarajan
+        given-names: Prasanna Kumar
+    doi: "10.5281/zenodo.20260147"
+    notes: "Dataset DOI; cite alongside the paper."
