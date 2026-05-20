@@ -19,8 +19,8 @@ The expected directory layout after unzipping is:
 
     magbridge_battery_v1_0/
     ├── data/
-    │   ├── shard_0.parquet
-    │   ├── shard_1.parquet
+    │   ├── shard_0000.parquet
+    │   ├── shard_0001.parquet
     │   ├── ... (5 shards, 1,352 rows each)
     │   └── metadata.parquet
     ├── splits/
