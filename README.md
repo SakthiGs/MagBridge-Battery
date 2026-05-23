@@ -3,7 +3,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Data license: CC-BY-4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20260147-blue)](https://doi.org/10.5281/zenodo.20260147)
-<!-- arXiv badge will appear once the preprint is live (currently in moderation) -->
+[![arXiv](https://img.shields.io/badge/arXiv-2605.20240-b31b1b.svg)](https://arxiv.org/abs/2605.20240)
 
 This is the code repository for **MagBridge-Battery: A Synthetic Bridge Dataset for Li-ion Magnetometry and State-of-Health Diagnostics** by Sakthi Prabhu Gunasekar and Prasanna Kumar Rangarajan (2026).
 
@@ -126,7 +126,7 @@ If you use MagBridge-Battery in your work, please cite **both** the paper and th
   title         = {{MagBridge-Battery}: A Synthetic Bridge Dataset for
                    {Li}-ion Magnetometry and State-of-Health Diagnostics},
   journal       = {arXiv preprint},
-  eprint        = {XXXX.XXXXX},
+  eprint        = {2605.20240},
   archivePrefix = {arXiv},
   year          = {2026}
 }
@@ -175,4 +175,4 @@ MagBridge-Battery does not redistribute raw upstream data. See the LICENSE file 
 
 ---
 
-*This repository was last updated to coincide with the v1.0 release on Zenodo and the pending arXiv preprint. The arXiv badge and identifier will become live once arXiv moderation completes.*
+*This repository accompanies the v1.0 release on Zenodo (DOI: 10.5281/zenodo.20260147) and the arXiv preprint (arXiv:2605.20240).*

@@ -26,7 +26,7 @@ both.
 **Plain text:**
 > Gunasekar, S. P. and Rangarajan, P. K. "MagBridge-Battery: A Synthetic
 > Bridge Dataset for Li-ion Magnetometry and State-of-Health Diagnostics."
-> arXiv preprint arXiv:XXXX.XXXXX, 2026.
+> arXiv preprint arXiv:2605.20240, 2026.
 
 **BibTeX:**
 ```bibtex
@@ -35,17 +35,17 @@ both.
   title         = {{MagBridge-Battery}: A Synthetic Bridge Dataset for
                    {Li}-ion Magnetometry and State-of-Health Diagnostics},
   journal       = {arXiv preprint},
-  eprint        = {XXXX.XXXXX},
+  eprint        = {2605.20240},
   archivePrefix = {arXiv},
   year          = {2026},
-  url           = {https://arxiv.org/abs/XXXX.XXXXX}
+  url           = {https://arxiv.org/abs/2605.20240}
 }
 ```
 
-> **Note:** The `arXiv:XXXX.XXXXX` placeholder will be replaced with the real
-> arXiv identifier after submission. Once the paper is published in a
-> peer-reviewed venue, the BibTeX above will be updated to point at the
-> published version of record. The arXiv ID will remain a valid alternative.
+> **Note:** The arXiv preprint is available at arXiv:2605.20240. If the paper
+> is later published in a peer-reviewed venue, the BibTeX above will be updated
+> to point at the version of record; the arXiv ID will remain a valid
+> alternative.
 
 
 ### Dataset (secondary citation)

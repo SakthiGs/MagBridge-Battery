@@ -52,7 +52,7 @@ preferred-citation:
   journal: "arXiv preprint"
   identifiers:
     - type: other
-      value: "arXiv:XXXX.XXXXX"
+      value: "arXiv:2605.20240"
       description: "arXiv identifier for the associated paper; placeholder until arXiv moderation completes."
 
 # Also-cite: the DATASET DOI
