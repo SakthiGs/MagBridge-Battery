@@ -1,29 +1,51 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
+% =====================================================================
+% MagBridge-Battery — Scientific Data submission
+% =====================================================================
+%
+% IMPORTANT - Scientific Data formatting rules followed in this draft:
+%   - No required template; using plain article class
+%   - References will be inline (no .bib file) when complete
+%   - Mandatory section headings: Background & Summary, Methods,
+%     Data Records, Technical Validation, Usage Notes, Data Availability,
+%     Code Availability, References
+%   - Optional sections: Data Overview, Acknowledgements
+%   - Author Contributions, Funding, Competing Interests submitted via
+%     SNAPP form (not in this file)
+%
+% STATUS as of last edit:
+%   [LOCKED]   Title
+%   [LOCKED]   Authors
+%   [LOCKED]   Abstract (168 words, validation hint included)
+%   [PENDING]  Background & Summary
+%   [PENDING]  Methods
+%   [PENDING]  Data Records
+%   [PENDING]  Data Overview (optional)
+%   [PENDING]  Technical Validation
+%   [PENDING]  Usage Notes
+%   [PENDING]  Data Availability
+%   [PENDING]  Code Availability
+%   [PENDING]  Inline references
+% =====================================================================
 
-\usepackage{cite}
+\documentclass[11pt]{article}
+
+% ---- Standard packages ----
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{tabularx}
+\usepackage[expansion=false]{microtype}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
-\usepackage{textcomp}
-\usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{xcolor}
 \usepackage{url}
+\usepackage{authblk}
+\usepackage{textcomp}
 \usepackage{tikz}
+\usepackage{placeins}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds,calc,shadows}
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=blue,
-    citecolor=blue,
-}
 
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-
-% Color palette for TikZ figures
+% ---- Color palette for the architecture figure ----
 \definecolor{osfblue}{RGB}{43,98,160}
 \definecolor{osfbluepale}{RGB}{223,232,243}
 \definecolor{pulseorange}{RGB}{218,123,38}
@@ -32,539 +54,1824 @@
 \definecolor{bridgegreenpale}{RGB}{225,238,231}
 \definecolor{outpurple}{RGB}{120,80,160}
 \definecolor{outpurplepale}{RGB}{236,229,243}
+
 \definecolor{anomred}{RGB}{200,70,70}
 \definecolor{regiongray}{RGB}{120,120,120}
 
+\definecolor{mbblue}{RGB}{224,235,247}
+\definecolor{mbgreen}{RGB}{232,244,234}
+\definecolor{mborange}{RGB}{255,242,224}
+\definecolor{mbpurple}{RGB}{244,235,255}
+\definecolor{mbgray}{RGB}{242,242,242}
+
+% ---- Line numbering for review (Scientific Data convention) ----
+% Uncomment for first-round review if reviewers prefer line numbers:
+% \usepackage{lineno}
+% \linenumbers
+
+
+% ---- Title spacing ----
+\setlength{\affilsep}{0.6em}
+
+% =====================================================================
+% TITLE — 101 chars; no colon; no acronyms; no brand name; no subjective claims
+% =====================================================================
+\title{A synthetic magnetic-signature dataset with electrochemical degradation labels for lithium-ion batteries}
+
+% =====================================================================
+% AUTHORS — Two authors; corresponding author marked
+% =====================================================================
+\author[1,*]{Sakthi Prabhu Gunasekar}
+\author[1]{Prasanna Kumar Rangarajan}
+
+\affil[1]{Department of Computer Science and Engineering, Amrita School of Computing, Amrita Vishwa Vidyapeetham, India}
+
+\affil[*]{Corresponding author: \texttt{sakthiprabhu.g@gmail.com}}
+
+\date{}  % Scientific Data does not display submission date
+
 \begin{document}
 
-\title{MagBridge-Battery: A Synthetic Bridge Dataset for Li-ion Magnetometry and State-of-Health Diagnostics}
+\sloppy
 
-\author{
-\IEEEauthorblockN{Sakthi Prabhu Gunasekar and Prasanna Kumar Rangarajan}
-\IEEEauthorblockA{
-Dept.\ of Computer Science \& Engineering\\
-Amrita School of Computing\\
-Amrita Vishwa Vidyapeetham, India\\
-ORCID: \href{https://orcid.org/0009-0006-0153-5674}{0009-0006-0153-5674},
-\href{https://orcid.org/0000-0001-6103-259X}{0000-0001-6103-259X}
-}
-}
 \maketitle
 
+% =====================================================================
+% ABSTRACT — 168 words; no novelty claims; no URLs; no sub-headings
+% Scientific Data recommends $\leq 170$ words
+% =====================================================================
 \begin{abstract}
-Battery health diagnostics today rely overwhelmingly on electrochemical signals at the cell terminals. A parallel literature has shown that magnetic sensing can resolve information that terminal-only measurements miss, but the central obstacle to method development in this area is the absence, to the best of our knowledge, of public battery magnetic-measurement datasets paired with degradation labels. We release \textbf{MagBridge-Battery v1.0}, a synthetic dataset of 6{,}760 magnetic-field signatures bridging real magnetic morphology from the Mohammadi--Jerschow Open Science Framework (OSF) archive with real state-of-health (SOH) labels from the PulseBat dataset. The release contains 5{,}600 PulseBat-conditioned grounded samples, 600 synthetic sensor-anomaly samples derived from clean parents, and 560 low-voltage Regime-B extrapolation samples. A cell-disjoint, parent-child-leakage-free primary benchmark split is verified to contain zero overlapping cells, zero cross-split parent-child pairs, and zero sample-ID overlap. We define three primary benchmark tasks (SOH regression, second-life classification, anomaly detection) and one auxiliary anomaly-subtype classification task, and validate the dataset with a controlled ablation suite: a label-shuffle ablation collapses SOH regression from $R^2 \approx 0.77$ to $\approx 0$, confirming that the bridge encodes input SOH non-trivially rather than producing label-aligned artefacts. The dataset is released on Zenodo under CC-BY-4.0; the bridge code and benchmark suite are released under Apache-2.0. This work bridges a gap in public data for magnetic-sensing battery diagnostics while paired magnetic--electrochemical measurements remain scarce.
+\noindent
+Battery diagnostics is commonly based on terminal electrochemical
+measurements, while magnetic sensing can provide complementary spatial
+information about internal current distribution and magnetisation. Public
+datasets combining magnetic measurements with degradation labels remain
+scarce. We present MagBridge-Battery v1.0, a reproducible synthetic benchmark
+built from two independent public sources: battery magnetometry provides
+measured magnetic morphology, while PulseBat provides state-of-health,
+state-of-charge, and pulse-derived features from retired
+lithium-iron-phosphate cells. Because the sources contain different cells and
+chemistries and are not experimentally paired, the generated signatures
+should be interpreted as synthetic benchmark data rather than measured
+magnetic ageing trajectories. The release contains 6,760 samples: 5,600
+conditioned signatures, 600 controlled sensor-anomaly samples, and 560
+low-voltage extrapolation-regime samples. Each sample contains six length-100
+magnetic channels with provenance metadata. A cell-disjoint primary split
+prevents conditioning-cell overlap and keeps synthetic anomalies with their
+clean parents. Reference tasks assess recovery of the imposed state-of-health conditioning and its derived second-life class, plus anomaly detection and anomaly-subtype classification. The
+dataset is intended for reproducible benchmarking and method development,
+not safety-critical battery diagnosis.
 \end{abstract}
 
-\begin{IEEEkeywords}
-battery diagnostics, magnetic sensing, state-of-health estimation, synthetic dataset, benchmark, second-life batteries, out-of-distribution evaluation, lithium iron phosphate, leakage-safe split
-\end{IEEEkeywords}
+% =====================================================================
+% BACKGROUND & SUMMARY  [TO BE WRITTEN]
+% Target: 600-800 words
+% Source: §I Motivation + §I.A The gap (rewritten for neutrality)
+% Key changes:
+%   - Remove subjective novelty claims ("to the best of our knowledge"
+%     softened to factual scarcity statements)
+%   - Frame the gap as factual ("public datasets are scarce") rather
+%     than rhetorical ("no public dataset exists")
+%   - Move "what we built" framing to end of section
+%   - Include 1-2 references to QuaLiProM and recent magnetometry work
+%     for "previous publications used these data" coverage
+% =====================================================================
+\section*{Background \& Summary}
 
-%==============================================================================
-\section{Motivation}
-\label{sec:motivation}
+Data-driven battery health diagnostics rely primarily on
+voltage, current, temperature, and impedance measurements.
+Most public battery datasets reflect this measurement modality. Widely used resources such as the Stanford/MIT cycling dataset~\cite{severson2019} and the PulseBat retired-cell pulse-test dataset~\cite{tao2024pulsebat,tao2024pulsebatdata} provide electrochemical measurements across a range of degradation states, with state-of-health (SOH) information and, in some cases, longitudinal degradation trajectories. These resources have supported research on cycle-life prediction, capacity-fade estimation, state estimation, and second-life battery assessment. Recent experimental studies have also examined SOH estimation specifically
+for second-life batteries using partial operating profiles and
+electrochemical-impedance measurements~\cite{braco2022secondlife,
+camboim2024secondlife}.
 
-Battery health diagnostics today rely overwhelmingly on \emph{electrochemical signals}: voltage, current, temperature, and impedance measurements taken at the cell terminals. The public datasets that drive method development reflect this. NASA, Oxford, CALCE, Stanford/Severson, MATR, HUST, XJTU, and PulseBat all provide rich electrochemical time-series at varying degrees of degradation, with well-characterised SOH labels and, in many cases, full degradation trajectories~\cite{severson2019,tao2024pulsebat}. These datasets have enabled a generation of work on early-life prediction, capacity-fade estimation, and second-life classification.
+Recent advances in lithium-ion battery-state estimation
+include hybrid deep-learning strategies for state-of-charge (SOC) estimation in large-scale energy-storage systems
+\cite{wang2026hybrid}, history-aware recurrent models
+for joint SOC and state-of-energy (SOE) estimation \cite{wang2025hlhgur}, and Bayesian-optimised bidirectional recurrent models combined with filtering for high-precision SOC estimation \cite{wang2025bilstm}. These studies demonstrate progress in temporal modelling and hybrid estimation using electrochemical and operational measurements. However, they do not address the separate scarcity of magnetic measurements paired with degradation labels. MagBridge-Battery addresses this complementary
+data gap through a reproducible synthetic benchmark,
+without claiming experimentally validated magnetic
+ageing behaviour.
 
-What none of them capture is the \emph{spatial distribution of current and magnetisation inside the cell}. A terminal-only measurement is, by construction, blind to localised hot-spots of charge storage, inhomogeneous redox at electrode surfaces, dendrite formation, and the kinds of internal defects that emerge during ageing or that signal manufacturing flaws. A parallel research literature, much smaller and almost entirely without public data, has shown that magnetometry can resolve precisely this missing information~\cite{ilott2018,romanenko2020,hu2020,ilott2017,nature2025magnetic,aachen2025}.
+Magnetic sensing provides a complementary measurement modality because magnetic fields around a cell depend on internal current distributions and magnetic responses that are not directly observable from terminal measurements alone. Previous studies have demonstrated magnetic characterisation of lithium-ion cells using several sensing approaches, including magnetometry and magnetic imaging~\cite{ilott2018,romanenko2020,hu2020,ilott2017,nature2025magnetic,aachen2025}. Recent work has further demonstrated magnetic imaging of current density in
+lithium-ion batteries~\cite{aachen2025} and operando magnetic microscopy of
+battery dynamics~\cite{nature2025magnetic}. Applied initiatives such as the QuaLiProM project are also investigating atomic magnetometry combined with AI for SOH-oriented classification of aged lithium-ion cells and second-life
+assessment~\cite{qualiprom}. These studies establish magnetic sensing as a potentially informative complementary modality, but they do not provide a large public dataset in which magnetic measurements are experimentally paired with degradation labels across many aged cells.
 
-This work has accelerated significantly in the past several years. Optically-pumped magnetometers, nitrogen-vacancy diamond sensors, and SQUID arrays have matured into measurement systems suitable for routine use on commercial cells. The QuaLiProM consortium (Fraunhofer IFAM, FAU Erlangen, and industrial partners; BMBF-funded; running through November 2026) is explicitly building an industrial pipeline that combines magnetometry with deep learning for second-life classification of retired batteries~\cite{qualiprom}. The Aachen--J\"ulich--Sussex--PTB collaboration recently demonstrated quantum magnetic imaging of 6000\,mAh cells~\cite{aachen2025}. Operando magnetic microscopy of ionic and electronic current distributions appeared in \emph{Nature Communications} in late 2025~\cite{nature2025magnetic}. The trajectory is clear: magnetic sensing is becoming a first-class modality for battery diagnostics.
+Public resources linking these two types of information therefore remain limited. The Open Science Framework (OSF) archive associated with Mohammadi, Ilott, and Jerschow~\cite{hu2020,mohammadi2020osf} provides experimentally measured magnetic scans of a lithium-ion cell at five operating voltages, but does not provide SOH-labelled ageing trajectories across multiple cells.  PulseBat~\cite{tao2024pulsebat,tao2024pulsebatdata}, in contrast, provides pulse-test measurements and degradation-related information from retired lithium-ion cells but contains no magnetic measurements. Importantly, these sources
+represent different cells, experimental settings, and cell chemistries and are not experimentally paired.
 
-\subsection{The gap}
+MagBridge-Battery was constructed as a reproducible
+cross-source synthetic benchmark using these complementary
+resources. Measured OSF magnetic data provide the
+magnetic-morphology scaffold. PulseBat supplies the
+SOH and SOC conditioning variables, while its
+pulse-voltage features are used upstream to derive
+the operating voltage.
 
-Despite this momentum, two things are conspicuously missing from the public landscape. First, \emph{to the best of our knowledge, no public dataset pairs battery magnetic measurements with degradation labels}. A systematic search of Zenodo, OSF, GitHub, Hugging Face, and the academic literature surfaces exactly one publicly archived raw magnetic-scan dataset of batteries: the OSF archive associated with Mohammadi, Ilott, and Jerschow (henceforth ``OSF'')~\cite{hu2020,osfdata}. It contains high-resolution magnetic field measurements of a single Li-ion cell at five operating voltages, with 41 scan positions per voltage. It does not include SOH labels, multi-cell variation, or a degradation trajectory. Every other publication reporting magnetic measurements of batteries uses proprietary or unreleased data.
+The bridge uses operating voltage, SOH, and SOC to
+generate controlled synthetic variations of the
+magnetic scaffold. No OSF magnetic measurement is
+assumed to correspond to an individual PulseBat cell,
+and the imposed SOH dependence is not an experimentally
+established magnetic ageing mechanism. The resulting
+signatures are therefore synthetic benchmark instances,
+not measured magnetic degradation trajectories.
 
-Second, \emph{no bridge connects the rich electrochemical-degradation datasets to any magnetic-sensing modality}. Researchers building methods for magnetic SOH estimation, second-life classification, or anomaly detection have no public benchmark to develop against. Cross-lab comparison is essentially impossible.
+The release contains 6,760 samples: 5,600 conditioned magnetic signatures,
+600 controlled sensor-anomaly samples, and 560 low-voltage
+extrapolation-regime (Regime-B) samples. Each sample contains six length-100
+magnetic channels with provenance metadata, and a cell-disjoint primary
+benchmark split is provided. The dataset is intended for reproducible method
+development, sensitivity analysis, and comparison of algorithms under a
+documented synthetic construction. Reference tasks are provided for SOH regression and second-life classification, which assess recovery of the imposed SOH conditioning rather than detection of physical magnetic ageing, together with anomaly detection and anomaly-subtype classification. MagBridge-Battery is not intended as a
+substitute for experimentally paired magnetic--electrochemical measurements
+or for direct battery-health or safety-critical decision making. Instead,
+the bridge assumptions, generation parameters, and provenance are exposed so
+that methods developed on the benchmark can be evaluated against future
+paired measurements when such data become available.
 
-This work asks: can the community make practical progress without waiting for paired magnetic--electrochemical data to become public, by \emph{bridging} the two modalities synthetically?
+% =====================================================================
+% METHODS  [TO BE WRITTEN]
+% Target: 1500-2500 words
+% Source: §III Bridge architecture + §IV Validation methodology
+% This is the section Scientific Data wants in MOST detail
+% =====================================================================
+\section*{Methods}
 
-%==============================================================================
-\section{The MagBridge-Battery v1.0 Dataset}
-\label{sec:dataset}
+\subsection*{Source data}
 
-MagBridge-Battery v1.0 is the central artifact of this work. We describe its composition, schema, splits, and integrity properties here. The bridge architecture that produced it is described in \S\ref{sec:architecture}; validation in \S\ref{sec:validation}.
+MagBridge-Battery draws on two independent public data sources that provide
+complementary information and are not experimentally paired.
 
-\subsection{Composition}
-\label{sec:dataset:composition}
+\textbf{Magnetic-morphology source.}
+Magnetic morphology is derived from the OSF battery magnetometry archive of
+Mohammadi, Ilott, and Jerschow~\cite{hu2020,mohammadi2020osf}
+(OSF DOI: \texttt{10.17605/\allowbreak OSF.IO/\allowbreak CW8ZV}).
+The archive contains magnetic-field measurements from a single lithium-ion
+pouch cell at five operating-voltage anchors
+$\{2.54, 2.81, 3.00, 3.10, 3.34\}$\,V, with 41 scan positions at each
+voltage. Here, a scan position denotes one of the 41 spatial measurement
+locations at which the magnetic field was sampled around the cell for a
+given voltage anchor. The source experiment used a Powerstream PGEBNMU53040
+pouch cell
+with approximate dimensions $2.9\times3.9\times0.7$\,cm and a rated
+capacity of 600\,mAh. The cell comprises a graphite anode and a
+nickel--manganese--cobalt-oxide (NMC) cathode~\cite{hu2020}.
+The magnetic field was measured using atomic magnetometers while the cell
+was spatially scanned within a magnetically shielded susceptometry setup.
+These measurements provide the experimentally observed signal-domain
+morphology used to construct the bridge. The archive does not provide
+SOH-labelled ageing trajectories across multiple cells; consequently,
+no SOH value in MagBridge-Battery is interpreted as an experimentally measured
+health state of the OSF cell. The OSF source is treated only as the experimentally measured
+magnetic-morphology source; no chemistry match, ageing-history match, or
+cell-level correspondence with the PulseBat conditioning population is
+assumed. The OSF archive does not specify an explicit licence. Prof. Alexej
+Jerschow, an author of the archive, confirmed by email that the data may be
+reused with citation; this correspondence is available to the editors upon
+request.
 
-The release contains \textbf{6{,}760 magnetic signatures} partitioned by provenance into three groups (Fig.~\ref{fig:composition}):
+\noindent\textbf{Electrochemical-conditioning source.}
+SOH, state-of-charge (SOC), and 21-dimensional pulse-voltage features are
+drawn from PulseBat~\cite{tao2024pulsebat,tao2024pulsebatdata},
+specifically version v3 of the TBSI-Lijing Battery Dataset archived on Zenodo
+(DOI: \texttt{10.5281/\allowbreak zenodo.13360631}), a public pulse-test
+dataset of retired lithium-ion cells with heterogeneous retirement conditions.
+PulseBat uses constant-current--constant-voltage (CCCV) capacity-calibration
+results as the SOH benchmarking capacity values, while pulse-response
+measurements are used to derive the 21-dimensional feature representation.
 
-\begin{itemize}
-    \item \textbf{5{,}600 PulseBat-conditioned grounded samples.} Generated by the bridge in the grounded regime ($v \in [3.06, 3.34]$\,V), conditioned on PulseBat-derived (SOH, SOC, U-features) drawn from real retired-cell pulse tests. Every sample carries the full label set.
-    \item \textbf{600 synthetic sensor-anomaly samples.} Four subtypes, 150 each, derived from clean parents via controlled perturbations: \texttt{sensor\_dropout}, \texttt{calibration\_drift}, \texttt{temporal\_warp}, \texttt{periodic\_interference}. Each anomaly row carries a \texttt{parent\_sample\_id} pointing to its clean parent.
-    \item \textbf{560 low-voltage Regime-B extrapolation samples.} Clustered at three low-voltage anchors (\texttt{nearest\_anchor} $\in \{2.54, 2.81, 3.00\}$\,V), outside the PulseBat in-distribution range. \emph{Regime-B samples are intended for low-voltage / OOD / anomaly-style evaluation, not SOH regression.} \texttt{soh}, \texttt{u\_features}, and \texttt{second\_life\_class} are \texttt{NaN} by design.
-\end{itemize}
+MagBridge-Battery uses the calibrated SOH values supplied by PulseBat
+directly as conditioning labels. In the upstream PulseBat processing
+pipeline, SOH is defined as
+\begin{equation}
+\mathrm{SOH}=\frac{Q}{Q_n},
+\end{equation}
 
-Every sample is a length-100 sequence with six signal channels plus a constant normalised time axis. MagBridge-Battery v1.0 uses the LFP subset of PulseBat exclusively; NMC and LMO records in PulseBat are reserved for future cross-chemistry extensions (\S\ref{sec:limitations}).
 
-\begin{figure}[!htbp]
+where $Q$ is the calibrated discharge capacity obtained
+from the capacity calibration test and $Q_n$ is the
+nominal battery capacity. For the LFP subset used in
+MagBridge-Battery, $Q_n=35$\,Ah.
+
+PulseBat determines the calibrated capacity using
+constant-current--constant-voltage (CCCV) charging
+followed by constant-current discharge. The cell is
+charged at 1C to the upper cut-off voltage and held
+at that voltage until the current decreases to 0.05C.
+It is then discharged at 1C to the lower cut-off
+voltage. For the 35-Ah LFP cells, the upper and lower
+cut-off voltages are 3.65\,V and 2.50\,V, respectively.
+
+The resulting discharge capacity is treated as the
+calibrated battery capacity. MagBridge-Battery does
+not recompute SOH from the 21-dimensional pulse
+features; it uses the upstream PulseBat SOH values
+directly.
+
+The pulse tests were conducted across SOC levels from 5\% to 50\% under a controlled ambient temperature of 25\,$^\circ$C. MagBridge-Battery uses exclusively the 35-Ah
+lithium-iron-phosphate (LFP) subset of PulseBat. The PulseBat records supply the conditioning-cell identifiers, calibrated SOH values, SOC values, and pulse-voltage features used upstream to derive the operating voltage and retained in the released metadata; they do not contain magnetic measurements. The associated PulseBat project repository states that the raw data and processed features are available under the MIT licence.
+
+The two sources are used with explicitly separated provenance: OSF provides the measured magnetic-morphology scaffold, whereas PulseBat provides the independent electrochemical conditioning population. No cell-level pairing, chemistry matching, ageing-history correspondence, or transfer of magnetic
+ageing behaviour between the source populations is assumed. In particular, the OSF NMC morphology is used only as a measured signal-domain scaffold; the LFP conditioning variables are applied as synthetic benchmark controls, and no chemistry-specific NMC-to-LFP ageing relationship is assumed.
+Consequently, the SOH-conditioned signatures are synthetic benchmark constructions rather than experimentally measured magnetic ageing trajectories.
+
+\begin{table}[!h]
 \centering
-\begin{tikzpicture}[font=\footnotesize,scale=0.95,transform shape]
-  \node[anchor=south,font=\bfseries\small] at (3.5,3.4) {MagBridge-Battery v1.0 --- 6{,}760 samples};
-  \fill[bridgegreen,rounded corners=2pt] (0,2.2) rectangle (5.80,2.9);
-  \fill[anomred,rounded corners=0pt] (5.80,2.2) rectangle (6.42,2.9);
-  \fill[regiongray,rounded corners=2pt] (6.42,2.2) rectangle (7.00,2.9);
-  \draw[rounded corners=2pt] (0,2.2) rectangle (7.00,2.9);
-  \node[white,font=\bfseries] at (2.9,2.55) {5{,}600 grounded};
-  \node[white,font=\bfseries\scriptsize,rotate=90] at (6.11,2.55) {600};
-  \node[white,font=\bfseries\scriptsize,rotate=90] at (6.71,2.55) {560};
-  \node[anchor=west,bridgegreen!70!black] at (0,1.7) {$\blacksquare$};
-  \node[anchor=west] at (0.25,1.7) {\textbf{Grounded:} PulseBat-conditioned, in-distribution voltage, full labels.};
-  \node[anchor=west,anomred!80!black] at (0,1.25) {$\blacksquare$};
-  \node[anchor=west] at (0.25,1.25) {\textbf{Anomaly:} 4 subtypes $\times$ 150 each, derived from clean parents.};
-  \node[anchor=west,regiongray] at (0,0.8) {$\blacksquare$};
-  \node[anchor=west] at (0.25,0.8) {\textbf{Regime-B:} 2.54/2.81/3.00\,V anchors; \texttt{soh}=\texttt{NaN} by design.};
-  \node[draw,rounded corners=3pt,fill=osfbluepale,inner sep=4pt,
-        font=\scriptsize,align=left,text width=7.0cm] at (3.5,-0.1) {%
-    \textbf{Primary split} (\texttt{by\_cell\_primary}): cell-disjoint, parent-child-leakage-free.\\[1pt]
-    train 4{,}507 \quad val 1{,}074 \quad test 1{,}179
-    \quad\textbf{0} cell overlap, \textbf{0} parent-child cross-split pairs.};
-\end{tikzpicture}
-\caption{MagBridge-Battery v1.0 composition. Bar width is proportional to sample count. The primary benchmark split is cell-disjoint with zero parent-child leakage.}
-\label{fig:composition}
-\end{figure}
+\caption{Comparison of the two independent upstream data sources used in
+MagBridge-Battery. The sources are not experimentally paired; the OSF
+dataset provides magnetic morphology, whereas PulseBat provides independent
+electrochemical conditioning variables.}
+\label{tab:source_comparison}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.22\linewidth}p{0.33\linewidth}p{0.39\linewidth}}
+\hline
+\textbf{Characteristic} &
+\textbf{OSF magnetometry} &
+\textbf{PulseBat} \\
+\hline
 
-\subsection{Schema}
-\label{sec:dataset:schema}
+Role in MagBridge-Battery &
+Magnetic-morphology source &
+Electrochemical-conditioning source \\
 
-Each row carries six signal channels of length 100:
-\begin{center}
-\texttt{B\_s1Y}, \texttt{B\_s1Z}, \texttt{B\_s2Y}, \texttt{B\_s2Z}, \texttt{B\_s1C5}, \texttt{B\_s2C6}.
-\end{center}
-The first four are signed Y/Z components of sensors 1 and 2. The last two are the channel-5 and channel-6 fields from the OSF source; the OSF archive labels these channels \texttt{Mag}, but their values are signed and can legitimately be negative (123 rows contain negative entries in \texttt{B\_s1C5}; 86 in \texttt{B\_s2C6}; minima $-80.47$ and $-94.08$ respectively). We rename them \texttt{C5} and \texttt{C6} in the release schema to avoid implying a strict $\sqrt{Y^2 + Z^2}$ magnitude interpretation. \textbf{\texttt{B\_s1C5} and \texttt{B\_s2C6} are retained signed source channels and are not interpreted as strict physical magnitudes.}
+Population used &
+Single pouch cell &
+Retired 35-Ah LFP cells \\
 
-A \texttt{time\_norm} column carries 100 evenly-spaced values in $[0,1]$. It is the same vector for every sample --- a constant reference grid included for loader convenience, droppable without information loss. The \texttt{temporal\_warp} anomaly perturbs signal values on this fixed grid; it does not export an irregular per-sample timebase.
+Cell chemistry &
+Graphite anode / NMC cathode &
+LFP \\
 
-Metadata fields include identifiers (\texttt{sample\_id}, \texttt{parent\_sample\_id}, \texttt{cell\_id}, \texttt{generation\_seed}), provenance (\texttt{bridge\_version}, \texttt{bridge\_config\_hash}, \texttt{schema\_version}), state labels (\texttt{voltage}, \texttt{soc}, \texttt{soh}, \texttt{chemistry}, \texttt{regime}, \texttt{nearest\_anchor}, \texttt{u\_features}, \texttt{second\_life\_class}), and anomaly labels (\texttt{anomaly\_flag}, \texttt{anomaly\_subtype}, \texttt{anomaly\_origin}, \texttt{anomaly\_severity}).
+Rated capacity &
+600\,mAh &
+35\,Ah \\
 
-\subsection{Benchmark splits}
-\label{sec:dataset:splits}
+Measurements used &
+Magnetic-field scans &
+CCCV capacity calibration and pulse-voltage measurements \\
 
-We provide two splits.
+Operating conditions &
+Five voltage anchors:
+2.54, 2.81, 3.00, 3.10, and 3.34\,V &
+Pulse tests at 5--50\% SOC and 25\,$^\circ$C \\
 
-\textbf{All primary benchmark results are reported on the \texttt{by\_cell\_primary} split}, which is cell-disjoint and parent-child leakage-free. Train / validation / test counts are 4{,}507 / 1{,}074 / 1{,}179 (Fig.~\ref{fig:composition}). Verified guarantees: zero physical cells overlap between subsets, zero (clean parent, anomaly child) pairs cross subset boundaries, zero sample-ID overlap. This is the split to use for any reported number.
+Generation inputs &
+Magnetic morphology &
+SOH, SOC, and pulse-voltage features used to derive operating voltage \\
 
-The companion \texttt{by\_record\_optimistic\_baseline} split is provided \emph{only} as a contrast and is not recommended for benchmark reporting. Its leakage is quantified explicitly: 59 cells appear in more than one subset, and 292 parent-child pairs are split across subset boundaries. A model trained on this split will appear artificially strong; we ship it so the inflation effect can be measured directly.
+SOH information &
+No &
+Yes, calibrated SOH values \\
 
-\subsection{Integrity properties}
+Magnetic measurements &
+Yes &
+No \\
 
-The release was audited on the shipped artifacts. Verified: zero duplicate \texttt{sample\_id} values across all 6{,}760 rows; zero duplicate full-signal hashes; zero NaN or infinity entries in any of the six signal channels; uniform length-100 signal arrays; exact metadata-to-shard ID correspondence; valid parent-child links for all 600 synthetic anomalies (all parents exist and are clean); and zero residual occurrences of deprecated schema fields or legacy anomaly labels. SHA-256 checksums for every shipped file are included in the release bundle.
+Relationship between sources &
+\multicolumn{2}{p{0.70\linewidth}}{
+Independent cells with different chemistries; no cell-level pairing or correspondence in ageing history between the OSF magnetic measurements and PulseBat conditioning records is assumed.} \\
+\hline
+\end{tabular}
+\end{table}
 
-\subsection{File layout, license, and citation}
-\label{sec:dataset:release}
+\subsection*{Bridge overview}
 
-The release ships as a single bundle: five Parquet shards of 1{,}352 rows each, a metadata-only Parquet view, the two split JSONs, a generation manifest pinning bridge version and configuration hash, a minimal Python loader, SHA-256 checksums, and licensing files. The dataset is licensed CC-BY-4.0; release code is licensed Apache-2.0; the LICENSE file documents the upstream sources (OSF magnetometry archive and PulseBat dataset) and their respective license declarations. \emph{No raw upstream data is redistributed in this release}; aggregate statistics derived from the OSF archive (per-anchor means and variances) are embedded in the bridge implementation but not in the released data files.
-
-Users are kindly requested to cite both this paper and the dataset DOI; see \texttt{CITING.md} in the release bundle for the recommended dual citation. The release is on Zenodo (DOI: \texttt{10.5281/zenodo.20260147}) and the code is on GitHub at \url{https://github.com/SakthiGs/MagBridge-Battery}.
-
-%==============================================================================
-\section{Bridge Architecture}
-\label{sec:architecture}
-
-The bridge is a deterministic function $\mathcal{B}(v, \text{SOC}, \text{SOH}, \mathbf{u}; \theta) \rightarrow \mathbf{X} \in \mathbb{R}^{T \times C}$ that maps a generation request --- operating voltage $v$, state of charge SOC, state of health SOH, and PulseBat U-feature vector $\mathbf{u} \in \mathbb{R}^{21}$ --- to a synthetic magnetic-signature time series of length $T = 100$ across $C = 6$ channels (\S\ref{sec:dataset:schema}). The configuration $\theta$ collects all tunable parameters, fixed once at bridge instantiation. Generation is reproducible: a given (request, $\theta$, seed) tuple always produces the same output.
-
-Figure~\ref{fig:architecture} summarises the bridge's data flow. The bridge has four components, applied in sequence: a regime classifier, a morphology bank derived from OSF, a degradation modulator conditioned on PulseBat labels via a learned latent representation we call \textbf{MagBridge-Embed}, and a noise model. The full mathematical specification of the degradation modulator (equations for LDA projection, perturbation, $k$-NN softmin decoding, and base--modulated blending) is provided in Appendix~\ref{app:archmath}; we describe the architecture at the conceptual level here.
+The bridge is a deterministic function for fixed inputs,
+configuration, and random seed:
+$\mathcal{B}(v,\mathrm{SOC},\mathrm{SOH};\theta,s)
+\rightarrow \mathbf{X}\in\mathbb{R}^{T\times C}$,
+where $v$ is the operating voltage, $\theta$ denotes
+the bridge configuration, and $s$ is the per-sample
+random seed. The generated magnetic signature has
+length $T=100$ across $C=6$ channels.
 
 \begin{figure*}[!htbp]
 \centering
-\begin{tikzpicture}[font=\footnotesize,node distance=1.4cm and 0.9cm,>={Stealth[length=2.5mm]}]
+\begin{tikzpicture}[font=\footnotesize,scale=1.0,transform shape]
 
-  \node[draw,thick,rounded corners=4pt,fill=osfbluepale,
-        minimum width=3.0cm,minimum height=1.5cm,align=center,
-        drop shadow={shadow xshift=0.5mm,shadow yshift=-0.5mm,opacity=0.25}]
-        (osf) {\textbf{OSF magnetometry}\\\scriptsize{(Mohammadi--Jerschow)}\\\scriptsize{1 cell, 5 voltage anchors,}\\\scriptsize{41 scans per anchor}};
+  % Total bar width = 8.8 cm
+  % Grounded: 5600/6760 = 82.8% -> 7.29
+  % Anomaly:  600/6760  = 8.9%  -> 0.78
+  % Regime-B: 560/6760  = 8.3%  -> 0.73
 
-  \node[draw,thick,rounded corners=4pt,fill=pulseorangepale,below=2.0cm of osf,
-        minimum width=3.0cm,minimum height=1.5cm,align=center,
-        drop shadow={shadow xshift=0.5mm,shadow yshift=-0.5mm,opacity=0.25}]
-        (pulse) {\textbf{PulseBat dataset}\\\scriptsize{(Tao et al.)}\\\scriptsize{464 retired Li-ion cells,}\\\scriptsize{SOH, SOC, U-features}};
+  % Title
+  \node[anchor=south,font=\bfseries\small] at (4.2,3.75)
+    {MagBridge-Battery --- 6{,}760 samples};
 
-  \node[draw,thick,rounded corners=3pt,fill=osfbluepale,right=1.6cm of osf,
-        minimum width=2.6cm,minimum height=1.0cm,align=center]
-        (morph) {Morphology bank\\\scriptsize{$\boldsymbol{\mu}_v,\boldsymbol{\sigma}_v$ per anchor}};
+  % Composition bar
+  \fill[bridgegreen,rounded corners=2pt] (0,2.45) rectangle (7.29,3.15);
+  \fill[anomred]                         (7.29,2.45) rectangle (8.07,3.15);
+  \fill[regiongray,rounded corners=2pt] (8.07,2.45) rectangle (8.80,3.15);
+  \draw[rounded corners=2pt] (0,2.45) rectangle (8.80,3.15);
 
-  \node[draw,thick,rounded corners=3pt,fill=bridgegreenpale,right=1.0cm of morph,
-        minimum width=3.2cm,minimum height=1.3cm,align=center,
-        drop shadow={shadow xshift=0.5mm,shadow yshift=-0.5mm,opacity=0.25}]
-        (mod) {\textbf{Degradation modulator}\\\scriptsize{\textbf{MagBridge-Embed} (171-D)}\\\scriptsize{$\rightarrow$ 4-D LDA $\rightarrow$ cone-restricted}\\\scriptsize{$k$-NN softmin decode}};
+  % Top callouts - aligned at same height, separated left/right
+  \draw[-{Latex[length=2mm]},anomred!85!black,thick]
+    (7.58,3.38) -- (7.58,3.16);
+  \node[anchor=south,font=\scriptsize\bfseries,anomred!85!black]
+    at (7.40,3.38) {600 (8.9\%)};
 
-  \node[draw,thick,rounded corners=3pt,fill=bridgegreenpale,below=1.4cm of mod,
-        minimum width=3.2cm,minimum height=0.9cm,align=center]
-        (regime) {Regime classifier\\\scriptsize{grounded / Regime-B}};
+  \draw[-{Latex[length=2mm]},regiongray!85!black,thick]
+    (8.48,3.38) -- (8.48,3.16);
+  \node[anchor=south,font=\scriptsize\bfseries,regiongray!90!black]
+    at (9.16,3.38) {560 (8.3\%)};
 
-  \node[draw,thick,rounded corners=3pt,fill=bridgegreenpale,right=1.0cm of mod,
-        minimum width=2.2cm,minimum height=1.0cm,align=center]
-        (noise) {Noise model\\\scriptsize{sensor + SOC-fluct}};
+  % Legend
+  \node[anchor=west,bridgegreen!70!black] at (0,1.85) {$\blacksquare$};
+  \node[anchor=west] at (0.25,1.85)
+    {\textbf{Grounded:} PulseBat-conditioned, source-supported voltage domain, full labels.};
 
-  \node[draw,thick,rounded corners=4pt,fill=outpurplepale,right=1.0cm of noise,
-        minimum width=3.0cm,minimum height=2.0cm,align=center,
-        drop shadow={shadow xshift=0.5mm,shadow yshift=-0.5mm,opacity=0.25}]
-        (out) {\textbf{MagBridge-Battery}\\\textbf{v1.0}\\[2pt]
-              \scriptsize{6{,}760 samples}\\
-              \scriptsize{$T=100$, $C=6$}\\
-              \scriptsize{CC-BY-4.0}};
+  \node[anchor=west,anomred!85!black] at (0,1.40) {$\blacksquare$};
+  \node[anchor=west] at (0.25,1.40)
+    {\textbf{Anomaly:} 4 subtypes $\times$ 150 each, derived from clean parents.};
 
-  \draw[->,thick,osfblue] (osf) -- node[above,midway,font=\scriptsize,osfblue!80!black]{aggregate stats} (morph);
-  \draw[->,thick,osfblue] (morph) -- (mod);
-  \draw[->,thick,pulseorange] (pulse.east) .. controls +(2,0) and +(-1.8,-0.6) .. node[above,pos=0.7,font=\scriptsize,pulseorange!80!black]{SOH, SOC, $\mathbf{u}$} (mod.south west);
-  \draw[->,thick,bridgegreen!60!black] (regime) -- (mod);
-  \draw[->,thick,bridgegreen!60!black] (mod) -- (noise);
-  \draw[->,thick,outpurple] (noise) -- (out);
+  \node[anchor=west,regiongray!90!black] at (0,0.95) {$\blacksquare$};
+  \node[anchor=west] at (0.25,0.95)
+    {\textbf{Regime-B:} 2.54/2.81/3.00\,V anchors; SOH = NaN by design.};
 
-  \node[anchor=north,font=\scriptsize,align=center,text width=15cm] at (5.5,-4.4)
-  {\textbf{No raw upstream data is redistributed.} Per-anchor aggregate statistics from OSF and per-cell label/feature values from PulseBat are used as bridge inputs; only synthetic outputs are released.};
+% Bottom split box - manually aligned
+\draw[
+  rounded corners=3pt,
+  fill=osfbluepale,
+  draw=black
+] (-0.10,-1.18) rectangle (8.95,0.52);
+
+% Header
+\node[anchor=west,font=\footnotesize\bfseries] at (0.18,0.25)
+  {Primary split};
+\node[anchor=west,font=\footnotesize] at (2.39,0.25)
+  {(\texttt{by\_cell\_primary})};
+
+% Description
+\node[anchor=west,font=\footnotesize] at (0.18,-0.10)
+  {cell-disjoint, parent-child leakage-free};
+
+% Train / Val / Test row
+\node[anchor=west,font=\footnotesize] at (0.18,-0.48)
+  {\textbf{train:} 4{,}507};
+\node[anchor=west,font=\footnotesize] at (3.15,-0.48)
+  {\textbf{val:} 1{,}074};
+\node[anchor=west,font=\footnotesize] at (5.75,-0.48)
+  {\textbf{test:} 1{,}179};
+
+% Guarantee row
+\node[anchor=west,font=\footnotesize] at (0.18,-0.85)
+  {\textbf{0} cell overlap};
+\node[anchor=west,font=\footnotesize] at (3.15,-0.85)
+  {\textbf{0} parent-child cross-split pairs};
 
 \end{tikzpicture}
-\caption{Bridge architecture. Real magnetic morphology from the OSF archive (blue) and real SOH/SOC/U-feature labels from PulseBat (orange) are combined by a four-component bridge (green). The latent representation inside the degradation modulator is called MagBridge-Embed. The released dataset (purple) contains only the synthetic outputs, not the raw upstream files.}
-\label{fig:architecture}
+\caption{Composition and primary split of MagBridge-Battery.
+The dataset contains 6{,}760 samples: 5{,}600 grounded samples constructed
+from OSF-derived magnetic morphology conditioned using PulseBat-LFP conditioning variables, 600 synthetic anomaly samples derived from clean
+parent samples, and 560 low-voltage Regime-B samples for which SOH is
+undefined by design. Bar width is proportional to sample count.
+The primary benchmark split, \texttt{by\_cell\_primary}, is cell-disjoint
+and parent-child leakage-free. Here, ``grounded'' denotes construction
+within the source-supported operating and conditioning domains and does
+not imply experimentally paired magnetic-field/SOH measurements.}
+\label{fig:composition}
 \end{figure*}
 
-\subsection{Regime classifier}
+For the released grounded dataset, the operating voltage $v$ is derived upstream from the mean of the 21 PulseBat pulse-voltage features and clipped to the grounded range $[3.06,3.34]$\,V. The pulse-feature vector is retained in the released provenance metadata but is not used directly by the bridge after the operating voltage has been determined. The OSF measurements and PulseBat-LFP records enter the bridge as independent sources with distinct roles: the former provides the magnetic-morphology scaffold, whereas the latter provides electrochemical conditioning variables. No sample-level pairing between the two sources is assumed.
 
-The bridge handles two operating regimes, derived from cross-data analysis of the OSF voltage anchors and the PulseBat U-feature distribution:
+In practical terms, generation proceeds in four steps. First, the requested voltage selects or interpolates an OSF-derived magnetic morphology. Second, PulseBat SOH is used to impose controlled synthetic SOH-dependent perturbations on that morphology, while SOC controls the low-frequency fluctuation term; the operating voltage is derived upstream from the PulseBat pulse-voltage features. Third, the perturbed representation is decoded back to the six-channel signal domain. Finally, sensor and SOC-dependent noise are added to produce the released synthetic signature.
 
-\begin{itemize}
-    \item \textbf{Grounded regime} ($v \in [3.06, 3.34]$\,V): both OSF morphology and PulseBat conditioning populate this range. The bridge interpolates between the OSF anchors at 3.10\,V and 3.34\,V using PulseBat-derived (SOH, SOC) as conditioning.
-    \item \textbf{Regime~B (extrapolation)} ($v \in [2.54, 3.06)$\,V): only OSF populates this range; PulseBat does not test in over-discharge for safety reasons. The bridge reproduces OSF morphology here without PulseBat-grounded conditioning. As stated in \S\ref{sec:dataset:composition}, Regime-B samples are intended for low-voltage / OOD evaluation, not SOH regression.
-\end{itemize}
+The configuration $\theta$ collects all tunable generation
+parameters and is fixed at bridge instantiation.
+Generation is reproducible: a given
+(request, $\theta$, seed) tuple always produces the
+same output, and the configuration is recorded by
+a hash in the released manifest.
+Figure~\ref{fig:architecture} illustrates how
+the OSF-derived morphology bank, regime-dependent
+SOH conditioning, decoding operations, and noise
+generation contribute to the construction of
+grounded and Regime-B samples.
 
-Voltages outside $[2.54, 3.34]$\,V are unsupported and rejected. Every generated sample carries its regime as metadata.
+The resulting release is organised into three sample groups, as summarised in Fig.~\ref{fig:composition}. Of the 6,760 samples, 5,600 are grounded samples constructed within the source-supported operating domain using PulseBat-LFP conditioning variables, 600 are controlled synthetic anomaly
+samples derived from clean parents, and 560 are low-voltage Regime-B samples for which SOH is undefined by design. The primary
+\texttt{by\_cell\_primary} split is cell-disjoint and keeps each synthetic anomaly sample in the same partition as its clean parent.
 
-\subsection{Morphology bank}
-
-The OSF archive is canonicalised into per-anchor empirical statistics: at each of the five anchor voltages $\{2.54, 2.81, 3.00, 3.10, 3.34\}$\,V, the bridge extracts the mean trajectory $\boldsymbol{\mu}_v \in \mathbb{R}^{T \times C}$ and per-timestep, per-channel standard deviation $\boldsymbol{\sigma}_v \in \mathbb{R}^{T \times C}$ across all 41 scan positions. For a generation request at voltage $v$, the bank produces a base sample by linear interpolation between bracketing anchors (full equations in Appendix~\ref{app:archmath}). At an exact OSF anchor with no perturbation, the bank reproduces the empirical mean trajectory to machine precision (sanity invariant 1, \S\ref{sec:validation}).
-
-\subsection{Degradation modulator and MagBridge-Embed}
-\label{sec:arch:modulator}
-
-The degradation modulator applies SOH-driven perturbation to the base morphology through a learned latent representation. We refer to this representation as \textbf{MagBridge-Embed}: a 171-dimensional embedding produced by a fixed quantum reservoir computer~\cite{fujii2017qrc} (10 qubits arranged as 4 memory + 6 processor, 2 reservoir layers, pooling $\{$last, mean, std$\}$). The reservoir parameters are not trained --- only the downstream linear readouts that operate in this embedding space are.
-
-The modulator's data flow is:
-\begin{enumerate}
-\item Compute the MagBridge-Embed of the base sample.
-\item Project to a 4-D Linear Discriminant Analysis (LDA) subspace fit on real OSF samples with voltage anchors as classes. In this subspace, within-anchor scatter is $\sim 1.78$ and inter-anchor separation is $\sim 279$ (ratio $\sim 157$).
-\item Perturb in the LDA subspace along the fitted state direction with magnitude proportional to $(1 - \text{SOH})$.
-\item Decode back to the time domain via cone-restricted $k$-NN softmin retrieval against the 205 OSF samples, with $k=8$ and a $75^\circ$ alignment cone.
-\item Blend the decoded morphology with the base sample proportionally to $(1 - \text{SOH})$.
-\item Apply per-channel amplitude scaling and SOH-scaled spectral broadening; the spectral broadening is mildly modulated by PulseBat U-feature dispersion.
-\end{enumerate}
-
-Section~\ref{sec:results:ablation} reports what the validation suite reveals about which of these components are load-bearing for downstream SOH decoding.
-
-\subsection{Noise model}
-
-Two additive noise sources are applied to the modulator output: \emph{sensor noise} (zero-mean Gaussian, per-channel standard deviation set to 5\% of the corresponding OSF anchor's empirical channel std), and \emph{SOC-dependent fluctuation} (low-frequency component scaled by $|\text{SOC} - 50|/50$, implemented as boxcar-smoothed Gaussian noise normalised and scaled to 4\% of per-channel range). Ageing-induced disorder is intentionally not added at this stage to avoid double-counting with the spectral broadening already applied.
-
-\subsection{Synthetic sensor anomalies}
-
-For the 600 anomaly samples in the v1.0 release, a clean parent sample is generated by the pipeline above, and one of four perturbations is applied: \texttt{sensor\_dropout}, \texttt{calibration\_drift}, \texttt{temporal\_warp}, or \texttt{periodic\_interference}. The clean parent's \texttt{sample\_id} is preserved as \texttt{parent\_sample\_id} on the anomaly row. The primary split is constructed so that no parent-child pair is split across train/val/test boundaries.
-
-%==============================================================================
-\section{Validation methodology}
-\label{sec:validation}
-
-A bridge that generates plausible-looking samples is not enough. We validate the dataset in three nested layers, each of which the bridge must pass before its outputs are released.
-
-\subsection{Sanity invariants}
-
-Five structural invariants are tested automatically on every release candidate; failure on any blocks release.
-
-\begin{enumerate}
-    \item \textbf{Identity at OSF anchors.} At each of the five OSF anchor voltages, the bridge's deterministic anchor-replica function (no perturbation, no noise) reproduces the empirical mean trajectory to within $10^{-12}$ of machine precision.
-    \item \textbf{SOH monotonicity.} For fixed (voltage, SOC, seed), increasing $(1 - \text{SOH})$ from 0 to 0.25 produces monotonically increasing L2 distance from the SOH$=$1.0 reference in at least one defensible signature metric.
-    \item \textbf{Voltage smoothness.} A 0.01\,V perturbation in voltage produces a smaller change in output than a 0.10\,V perturbation, ruling out discontinuities at anchor boundaries.
-    \item \textbf{Regime classification correctness.} The classifier returns the expected regime at boundary cases $\{2.54, 2.81, 3.00, 3.06, 3.10, 3.34\}$\,V and rejects out-of-range tests at $\{2.00, 4.00\}$\,V.
-    \item \textbf{Anomaly flag consistency.} Every Regime-B sample carries \texttt{anomaly\_flag} $=$ \texttt{True}; every grounded-regime clean sample carries \texttt{False}.
-\end{enumerate}
-
-\subsection{Distributional sanity at grounded anchors}
-
-At the two grounded-regime OSF anchors (3.10\,V, 3.34\,V), bridge-generated samples at SOH$=$1.0 should be statistically indistinguishable from real OSF samples. We generate 41 synthetic samples per anchor (matching the OSF scan-position count) and run per-channel, per-timestep two-sample Kolmogorov--Smirnov tests against real OSF samples. We additionally report (a) the ratio of synthetic to real per-channel standard deviations as an amplitude calibration check, and (b) the mean absolute difference of the synthetic and real cross-channel correlation matrices.
-
-\subsection{Controlled ablations}
-\label{sec:validation:ablations}
-
-A bridge that passes the invariants and the distributional sanity check could still be a label-aligned artifact --- it could encode the SOH input into the output in a way that any standard readout trivially recovers, without the bridge doing physically meaningful work. To rule this out, we run four ablation scenarios on identical request lists:
-
-\begin{itemize}
-    \item \textbf{A0 baseline}: real fitted state direction, real per-cell SOH labels.
-    \item \textbf{A1 random direction}: replace the fitted state direction with a uniformly-sampled unit vector in the 4-D LDA subspace.
-    \item \textbf{A2 shuffled SOH labels}: permute SOH values across PulseBat records before the bridge sees them, breaking the SOH--cell binding. The benchmark grades regression against the \emph{original} per-cell SOH (preserved in metadata), not the shuffled values driving generation.
-    \item \textbf{A3 inverted direction}: replace the fitted state direction with its negation.
-\end{itemize}
-
-A2 is the load-bearing test. If the bridge is encoding cell-state-truthful information, A2 should collapse downstream regression $R^2$ to approximately zero. A1 and A3 jointly probe whether the specific fitted LDA direction is privileged for downstream decoding.
-
-\subsection{Relationship of ablation pilots to the v1.0 release}
-\label{sec:validation:pilot_vs_release}
-
-The four-scenario ablations were executed on focused $\sim$310-sample-per-scenario pilots produced by the v1.0 bridge architecture in the grounded regime. The released v1.0 dataset (\S\ref{sec:dataset}) is generated by the \emph{same} v1.0 bridge with the \emph{same} configuration $\theta$ (pinned by \texttt{bridge\_config\_hash} in the manifest), scaled to 5{,}600 grounded samples plus the 600 anomalies and 560 Regime-B samples. Because the released dataset is generated by the same bridge configuration, the ablation pilots provide architecture-level evidence for the released dataset's behaviour; we do not re-run ablations at full scale because direction-perturbation contrasts are already statistically saturated at the pilot size.
-
-\subsection{Benchmark tasks}
-\label{sec:validation:tasks}
-
-For downstream evaluation we define three tasks:
-
-\begin{itemize}
-    \item \textbf{T1 SOH regression}: continuous SOH (released range $[0.744, 0.962]$, reflecting PulseBat retired-cell SOH distribution) from the magnetic signature. Grounded-regime samples only.
-    \item \textbf{T2 Second-life classification}: binary classification with the cutoff at SOH$=0.85$ (\texttt{reuse} if SOH$>0.85$, \texttt{recondition} otherwise), matching the convention used in the released metadata's \texttt{second\_life\_class} field. Grounded-regime samples only.
-    \item \textbf{T3 Anomaly detection}: train on grounded-regime clean samples, test on a mix of held-out grounded clean, synthetic-anomaly perturbed, and Regime-B samples.
-\end{itemize}
-
-All three tasks use the \texttt{by\_cell\_primary} split (\S\ref{sec:dataset:splits}) with five seeds, and few-shot stratified subsampling at $k \in \{2, 5, 10, 20\}$ examples per class (T1, T2) or examples per training pool (T3). Reference models are standard sklearn pipelines: ridge regression, SVR-RBF, and random forest for T1; logistic regression, ridge classifier, linear SVC, and random forest for T2 and T3. The benchmark suite uses a 57-feature static descriptor (9 features per channel plus 3 cross-channel correlations), which reproduces a reference OSF feature implementation to $1.87 \times 10^{-12}$ machine precision, ensuring that any difference between bridge results and a reference experiment on real OSF data is attributable to the bridge itself, not feature drift.
-
-%==============================================================================
-\section{Results}
-\label{sec:results}
-
-\subsection{Sanity invariants}
-
-All five sanity invariants pass. Identity at OSF anchors: maximum absolute deviation $1.87 \times 10^{-12}$. SOH monotonicity: distance from SOH$=$1.0 reference grows monotonically across $\text{SOH} \in \{1.00, 0.95, 0.90, 0.85, 0.80, 0.75\}$ at both 3.10\,V and 2.81\,V. Voltage smoothness: a 0.01\,V step produces L2 change $\approx 261$ vs.\ $\approx 1881$ for a 0.10\,V step. Regime classification and anomaly flag invariants pass on all boundary cases.
-
-\subsection{Distributional sanity at grounded anchors}
-
-Per-channel KS tests pass on 6 of 6 channels at both grounded anchors (3.10\,V, 3.34\,V) at $p > 0.05$. Per-channel standard-deviation ratios (synthetic / real) lie in $[0.98, 1.02]$, indicating essentially exact amplitude calibration. The mean absolute cross-channel correlation difference is 0.46 at 3.10\,V and 0.35 at 3.34\,V; the v1 bridge's independent-channel-perturbation assumption is the source of this gap and is a known limitation (\S\ref{sec:limitations}). Qualitatively, bridge-generated samples at SOH$=$1.0 overlay almost exactly onto real OSF samples at both grounded anchors across all six channels; the bridge captures the characteristic dip-spike feature near timestep $\approx 45$ in channels \texttt{B\_s1C5} and \texttt{B\_s2C6}, and per-anchor amplitude relationships across the six channels are preserved.
-
-\subsection{Ablation results}
-\label{sec:results:ablation}
-
-Headline results from the controlled ablations are summarised in Tables~\ref{tab:soh_ablation} and~\ref{tab:second_life_ablation}.
-
-\begin{table}[t]
-\caption{SOH regression $R^2$ (best model per shot, by-cell test split, 5-seed mean) on bridge v1.0 ablation pilots.}
-\label{tab:soh_ablation}
+\begin{figure}[!h]
 \centering
-\begin{tabular}{lcccc}
+\includegraphics[
+    width=\textwidth,
+    height=0.70\textheight,
+    keepaspectratio
+]{MagBridge_Figure2_CodeAligned_BlackText.pdf}
+
+\caption{Architecture of the MagBridge-Battery synthetic
+data-generation pipeline. OSF magnetometry (blue) supplies
+the measured magnetic-morphology scaffold, while PulseBat
+(orange) provides independent electrochemical conditioning
+variables. For grounded samples, the bridge combines
+voltage-dependent morphology with synthetic SOH conditioning
+through a fixed quantum-reservoir embedding, LDA projection,
+cone-restricted decoding, morphology blending, and noise
+generation. Synthetic sensor anomalies are derived from
+clean grounded samples. Regime-B samples are generated
+at low OSF voltage anchors without SOH-dependent
+conditioning; SOC-dependent noise remains active.
+The release contains 5,600 clean grounded samples,
+600 synthetic anomalies, and 560 Regime-B samples.
+The two upstream sources are not experimentally paired,
+and no raw upstream files are redistributed.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection*{Regime classifier}
+
+The bridge operates in two voltage regimes, both recorded in the
+\texttt{regime} metadata field. In the \emph{grounded} regime
+(\texttt{regime}${=}$\texttt{grounded},
+$v \in [3.06,3.34]$\,V), PulseBat electrochemical conditioning is
+available. For each request, the base magnetic morphology is constructed
+from the OSF voltage anchors that bracket the requested voltage according
+to the interpolation procedure described below; the 3.06\,V value defines
+the conditioning-regime boundary and is not itself an OSF measurement
+anchor. The PulseBat-derived SOH and SOC variables are then applied as
+synthetic conditioning variables.
+
+In the \emph{extrapolation} regime
+(\texttt{regime}${=}$\texttt{extrapolation}, also referred to as
+Regime-B; $v \in [2.54,3.06)$\,V), PulseBat SOH conditioning is not
+applied. Samples in this regime are generated from the OSF morphology
+bank and are intended for low-voltage and out-of-distribution evaluation
+rather than SOH regression. Voltages outside $[2.54,3.34]$\,V are
+rejected. Every generated sample records its regime in the metadata.
+
+Here, ``extrapolation'' refers to operation outside the PulseBat-conditioned
+grounded regime; the Regime-B voltages themselves correspond to measured OSF
+voltage anchors and therefore do not represent extrapolation beyond the OSF
+magnetic measurement range.
+
+Among the OSF voltage anchors, 3.10\,V and 3.34\,V lie within the grounded
+regime and therefore provide direct anchor points for the distributional
+validation reported in Technical Validation.
+
+\subsection*{Morphology bank}
+
+The OSF archive is canonicalised into per-anchor empirical statistics. At each of the five anchor voltages, the bridge extracts a mean trajectory $\boldsymbol{\mu}_v \in \mathbb{R}^{T \times C}$ and a per-timestep, per-channel standard deviation $\boldsymbol{\sigma}_v \in \mathbb{R}^{T \times C}$ over the 41 scan positions. For a generation request at voltage $v$ bracketed by anchors $v_l \leq v \leq v_h$, the bank forms a base sample by linear interpolation,
+\begin{equation}
+\boldsymbol{\mu}(v) = (1-\alpha)\,\boldsymbol{\mu}_{v_l} + \alpha\,\boldsymbol{\mu}_{v_h}, \qquad \alpha = \frac{v - v_l}{v_h - v_l},
+\end{equation}
+\begin{equation}
+\boldsymbol{\sigma}(v) = \sqrt{(1-\alpha)\,\boldsymbol{\sigma}_{v_l}^2 + \alpha\,\boldsymbol{\sigma}_{v_h}^2},
+\end{equation}
+\begin{equation}
+\mathbf{X}_{\mathrm{base}} = \boldsymbol{\mu}(v) + \boldsymbol{\sigma}(v) \odot \boldsymbol{\epsilon}, \qquad \boldsymbol{\epsilon} \sim \mathcal{N}(0, I).
+\end{equation}
+The measured OSF data therefore determine the anchor morphology, while intermediate-voltage and stochastic realisations are generated by the interpolation and sampling procedure above. At an exact anchor with no perturbation, the deterministic anchor-replica
+configuration is defined to return the empirical mean trajectory; this
+property is tested in Technical Validation.
+
+\subsection*{SOH-conditioning module}
+
+The SOH-conditioning module is a synthetic component of the bridge that applies controlled SOH-dependent perturbations to the base morphology through a fixed feature representation, termed MagBridge-Embed in the released pipeline. Here, SOH conditioning refers to controlled synthetic conditioning using the PulseBat SOH variable and does not imply that the imposed perturbation represents an experimentally established magnetic ageing mechanism.
+
+MagBridge-Embed is a 171-dimensional reservoir-derived embedding used as a reproducible latent space for defining and decoding morphology perturbations. In this release, the embedding is produced by a fixed quantum reservoir encoder following the reservoir-computing principle of Fujii and Nakajima~\cite{fujii2017qrc}. The encoder uses 10 qubits arranged as 4 memory qubits and 6 processor qubits, two reservoir layers, and pooling over last, mean, and standard-deviation statistics. The reservoir circuit was implemented in PennyLane using the \texttt{default.qubit} simulator; the generation environment specified PennyLane version 0.40 or later. The reservoir parameters are not trained; only the downstream linear projections used inside the bridge are fitted. The encoder therefore acts as a deterministic feature transform within the
+released generation pipeline rather than as a trained quantum model. It is retained in MagBridge-Battery because it is the representation used to generate the frozen released artifact; its use does not imply a claim of quantum advantage or performance optimality. The dependence of benchmark utility on this representation is examined using matched alternative representations in Technical Validation.
+
+The module first computes the embedding $\mathbf{e}_{\mathrm{base}}$
+of the base sample and projects it into a four-dimensional Linear
+Discriminant Analysis (LDA) subspace fitted on real OSF samples with the
+voltage anchors as classes,
+\begin{equation}
+\mathbf{z}_{\mathrm{base}} =
+\big(\boldsymbol{\Sigma}^{-1/2}
+(\mathbf{e}_{\mathrm{base}}-\boldsymbol{\mu}_e)
+-\bar{\mathbf{x}}\big)\mathbf{W}_{\mathrm{LDA}}.
+\end{equation}
+
+Here, $\mu_e$ and $\Sigma$ denote the fitted embedding centring and scaling
+statistics used for standardisation, $\bar{x}$ is the LDA centring vector,
+and $W_{\mathrm{LDA}}$ is the fitted four-dimensional LDA projection matrix.
+
+The fitted unit direction $\hat{\mathbf{d}}$ is aligned with the ordered OSF voltage-anchor centroids in the four-dimensional LDA space, with the positive direction corresponding to increasing anchor voltage. A synthetic SOH-conditioning displacement is then applied along the fitted
+direction $\hat{\mathbf{d}}$, with magnitude determined by
+$\delta=\max(0,1-\mathrm{SOH})$,
+\begin{equation}
+\mathbf{z}_{\mathrm{pert}} =
+\mathbf{z}_{\mathrm{base}} + m\hat{\mathbf{d}},
+\qquad
+m=-\gamma\delta.
+\end{equation}
+This displacement is a benchmark-generation rule rather than an
+experimentally derived magnetic ageing trajectory. The fitted direction
+$\hat{\mathbf{d}}$ is not interpreted as unique, causal, or physically
+identified; alternative-direction ablations are evaluated in Technical
+Validation.
+
+The perturbed representation is decoded back to the time domain by a
+cone-restricted $k$-nearest-neighbour softmin retrieval against the real
+OSF samples,
+\begin{equation}
+\mathbf{X}_{\mathrm{decode}} =
+\sum_{i\in\mathcal{N}_k}w_i\mathbf{X}^{\mathrm{OSF}}_i,
+\qquad
+w_i =
+\frac{\exp(-d_i/\tau)}
+{\sum_j\exp(-d_j/\tau)},
+\end{equation}
+with $k=8$ neighbours and a $75^\circ$ alignment cone. The decoded
+morphology is then blended with the base sample according to
+\begin{equation}
+\mathbf{X}_{\mathrm{mod}} =
+(1-\beta)\mathbf{X}_{\mathrm{base}}
++\beta\mathbf{X}_{\mathrm{decode}},
+\qquad
+\beta=\min(1,1.5\delta).
+\end{equation}
+
+In the released bridge implementation (v1.3), the
+SOH-dependent latent displacement is applied opposite
+to the fitted positive direction $\hat{\mathbf{d}}$,
+whereas the cone filter evaluates candidate alignment
+using the positive direction $\hat{\mathbf{d}}$.
+Specifically, candidate displacements are measured
+relative to $\mathbf{z}_{\mathrm{base}}$, and their
+angular alignment is tested against
+$\hat{\mathbf{d}}$, rather than against the signed
+SOH-dependent displacement vector. Cone filtering is
+bypassed for $\delta < 0.02$, and the unrestricted
+candidate set is used when fewer than eight candidates
+satisfy the angular criterion. This convention is
+preserved in the frozen released dataset; a
+sign-consistent alternative is evaluated separately
+as a diagnostic in Technical Validation.
+
+Two further SOH-scaled operations are applied after decoding. First, per-channel multiplicative amplitude jitter increases with \(\delta=\max(0,1-\mathrm{SOH})\). Second, zero-mean broadband Gaussian perturbations (referred to below as spectral broadening) are added with magnitude proportional to the same SOH difference. The released configuration sets the amplitude-strength and spectral-strength parameters to 0.30 and 0.05, respectively. These operations are part of the synthetic benchmark construction and are not calibrated representations of physical ageing. The PulseBat pulse-feature vector does not directly modulate these operations; in the released generation pipeline, it is used upstream to determine the operating voltage of each grounded request. The same configuration uses \(\gamma=800\), \(k=8\), \(\tau=50\), and a cone half-angle of \(75^\circ\); the full configuration is pinned by hash in the manifest. Sensitivity to these generation parameters is evaluated in Technical Validation.
+
+\subsection*{Noise model}
+
+Two additive noise sources are applied to the module output. Sensor noise is zero-mean Gaussian with per-channel standard deviation set to 5\% of the standard deviation of the SOH-conditioned signal over its 100 time points for the corresponding channel. An SOC-dependent fluctuation adds a low-frequency component scaled by $|\mathrm{SOC}-50|/50$, implemented as boxcar-smoothed Gaussian noise normalised and scaled to 4\% of the per-channel range. No additional SOH-dependent disorder term is applied, to avoid double-counting the spectral broadening already introduced by the SOH-conditioning module.
+
+\subsection*{Synthetic sensor anomalies}
+
+For the 600 anomaly samples, a clean parent sample is generated by the
+pipeline above and one of four controlled perturbations is applied:
+\texttt{sensor\_dropout}, \texttt{calibration\_drift},
+\texttt{temporal\_warp}, or \texttt{periodic\_interference}
+(150 samples each). These perturbations represent generic sensor and acquisition corruptions,
+including missing measurements, calibration drift, timing distortion, and
+periodic interference. Bias, drift, scaling, and dropout are established
+sensor-fault modes~\cite{silva2012sensorfault}, while magnetic measurements
+are also susceptible to external interference that can require explicit
+compensation~\cite{janosek2019magnetic}. They are implemented as controlled
+benchmark stress tests rather than as experimentally calibrated fault
+distributions for a specific magnetometer or battery experiment. Their
+severity values should therefore be interpreted as reproducible generation
+settings, not as estimates of real-world fault prevalence or magnitude.
+The parent identifier is retained in \texttt{parent\_sample\_id}, and
+parent--child samples are kept within the same benchmark partition.
+
+\subsection*{Reproducibility}
+
+Generation is fully deterministic given the configuration $\theta$ and
+per-sample seeds. The released manifest records the bridge version, a hash
+of the bridge hyperparameters, the schema version, and per-sample generation
+seeds, allowing the released generation configuration to be identified and
+replayed. The bridge implementation, generation scripts, and unit tests are
+openly available (Code Availability).
+
+% =====================================================================
+% DATA RECORDS  [NEW — TO BE WRITTEN]
+% Target: 800-1200 words
+% Source: §II Composition + §II.B Schema + §II.C Splits
+% This is the section reviewers check most carefully
+% =====================================================================
+\section*{Data Records}
+
+The MagBridge-Battery dataset is archived on
+Zenodo~\cite{gunasekar2026magbridge_dataset} under a Creative Commons
+Attribution 4.0 (CC-BY-4.0) licence. The release is distributed as a single
+bundle containing five Parquet data shards of 1,352 rows each, a
+metadata-only Parquet view, two benchmark-split files in JSON format, a
+generation manifest, a minimal Python loader, and SHA-256 checksums for
+every shipped file. The complete dataset contains 6,760 rows. Each row
+corresponds to one synthetically generated magnetic-signature sample and
+contains six length-100 magnetic channels, a shared length-100 normalised
+time grid, conditioning and provenance metadata, and anomaly-related fields
+where applicable.
+
+\subsection*{Composition}
+
+The 6,760 samples are partitioned into three provenance groups. The grounded
+group contains 5,600 samples generated within the grounded voltage regime
+using PulseBat-LFP SOH and SOC as conditioning variables, with the operating
+voltage derived upstream from the PulseBat pulse-voltage features. These
+samples provide the clean labelled subset for SOH regression and second-life
+classification. The anomaly group contains 600 synthetic sensor-anomaly
+samples derived from clean grounded parents, with 150 samples each for
+\texttt{sensor\_dropout}, \texttt{calibration\_drift},
+\texttt{temporal\_warp}, and \texttt{periodic\_interference}. Each anomaly
+row stores the identifier of its clean parent. The extrapolation-regime (Regime-B) group contains 560 low-voltage samples generated at the Regime-B anchors
+$\{2.54, 2.81, 3.00\}$\,V. These samples lie outside the PulseBat-LFP
+conditioning range used in this release; therefore \texttt{soh},
+\texttt{u\_features}, and \texttt{second\_life\_class} are set to missing
+values by design. They are intended for low-voltage and
+out-of-distribution evaluation rather than SOH regression.
+
+\subsection*{Signal channels}
+
+Each row contains six magnetic signal channels, each represented as a
+length-100 sequence: \texttt{B\_s1Y}, \texttt{B\_s1Z},
+\texttt{B\_s2Y}, \texttt{B\_s2Z}, \texttt{B\_s1C5}, and
+\texttt{B\_s2C6}. The first four represent signed Y and Z field components
+for two sensors. The final two are signed source channels retained from the
+OSF archive. Although these channels are labelled as magnitude channels in
+the source archive, their values are signed and may be negative; they are
+therefore preserved as signed channels and should not be interpreted as
+strict $\sqrt{Y^2+Z^2}$ magnitudes.
+
+The \texttt{time\_norm} column contains 100 evenly spaced values in
+$[0,1]$. This reference grid is identical for every sample and therefore
+carries no sample-specific timing information. The
+\texttt{temporal\_warp} anomaly perturbs signal values on this fixed grid
+rather than introducing an irregular per-sample timebase.
+
+\subsection*{Metadata fields}
+
+Each row additionally carries identifier, provenance, conditioning-label,
+and anomaly-label fields. Table~\ref{tab:fields} documents these fields.
+SOH-related conditioning labels are populated for grounded and anomaly
+samples; for extrapolation-regime samples, they are \texttt{NaN} by design.
+
+\begin{table}[!htb]
+\centering
+\caption{Metadata fields in each MagBridge-Battery record. Chemistry,
+SOH, SOC, and pulse-feature fields refer to the PulseBat conditioning
+source and should not be interpreted as measured properties of the
+independent OSF magnetic-morphology source. Signal channels
+(\texttt{B\_s1Y}, \texttt{B\_s1Z}, \texttt{B\_s2Y},
+\texttt{B\_s2Z}, \texttt{B\_s1C5}, \texttt{B\_s2C6}) and
+\texttt{time\_norm} are length-100 numeric arrays and are not repeated here.}
+\label{tab:fields}
+\small
+\begin{tabularx}{\textwidth}{@{}llX@{}}
 \toprule
-Scenario & $k=2$ & $k=5$ & $k=10$ & $k=20$ \\
+Field & Type & Description \\
 \midrule
-A0 baseline & $+0.62$ & $+0.64$ & $+0.70$ & $+0.77$ \\
-A1 random direction & $+0.67$ & $+0.61$ & $+0.72$ & $+0.78$ \\
-A2 shuffled SOH & $-0.01$ & $+0.03$ & $-0.00$ & $-0.04$ \\
-A3 inverted direction & $+0.67$ & $+0.62$ & $+0.72$ & $+0.75$ \\
+\texttt{sample\_id}          & string  & Unique identifier for the sample. \\
+\texttt{parent\_sample\_id}  & string  & For anomalies, the clean parent's \texttt{sample\_id}; else null. \\
+\texttt{cell\_id} & string &
+PulseBat conditioning-cell identifier for grounded and synthetic-anomaly
+samples; Regime-B samples use one of three voltage-specific pseudo-cell
+identifiers. \\
+\texttt{generation\_seed}    & int     & Random seed used to generate the sample. \\
+\texttt{bridge\_version}     & string  & Bridge version tag (\texttt{v1.3}). \\
+\texttt{bridge\_config\_hash}& string  & Hash of the bridge hyperparameters. \\
+\texttt{schema\_version}     & string  & Schema version tag. \\
+\texttt{voltage}             & float   & Operating voltage in volts. \\
+\texttt{soc} & float &
+PulseBat-derived state-of-charge conditioning value, percent. \\
+\texttt{soh} & float &
+PulseBat-derived state-of-health conditioning value in $[0,1]$;
+\texttt{NaN} for extrapolation-regime samples. \\
+\texttt{chemistry} & string &
+Chemistry of the PulseBat conditioning cell (\texttt{LFP} in this release);
+this field does not describe the independent OSF magnetic-morphology source. \\
+\texttt{regime}              & string  & \texttt{grounded} or \texttt{extrapolation}. \\
+\texttt{nearest\_anchor}     & float   & Nearest OSF voltage anchor, volts. \\
+\texttt{u\_features} & array &
+21-dimensional PulseBat-derived pulse-voltage vector used upstream to derive
+the operating voltage; \texttt{NaN} for extrapolation-regime samples. \\
+\texttt{second\_life\_class} & string  & \texttt{reuse} or \texttt{recondition}; \texttt{NaN} for extrapolation-regime samples. \\
+\texttt{anomaly\_flag} & bool &
+True for synthetic sensor anomalies and extrapolation-regime samples;
+the field therefore denotes departure from the clean grounded subset,
+not exclusively a sensor fault. \\
+\texttt{anomaly\_subtype}    & string  & One of four subtypes, or null. \\
+\texttt{anomaly\_origin}     & string  & Provenance tag for the anomaly perturbation. \\
+\texttt{anomaly\_severity}   & float   & Perturbation severity for anomalies. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Benchmark splits}
+
+Two benchmark splits accompany the dataset. The primary split,
+\texttt{by\_cell\_primary}, is intended for all headline results. It is
+cell-disjoint and parent--child-leakage-free, with 4,507 training samples,
+1,074 validation samples, and 1,179 test samples. The split has zero
+PulseBat conditioning cells shared between partitions, zero
+clean-parent/anomaly-child pairs divided across partitions, and zero
+sample-identifier overlap.
+
+The three Regime-B voltage-specific pseudo-cells are assigned one per
+partition under the deterministic split procedure: the training,
+validation, and test partitions contain 199, 178, and 183 Regime-B
+samples, respectively, ensuring that all three partitions retain
+Regime-B examples for the T3 benchmark.
+
+A companion split, \texttt{by\_record\_optimistic\_baseline}, is provided
+only as a leakage contrast. It contains quantified leakage, including
+59 dataset cell identifiers appearing in more than one partition
+(56 PulseBat conditioning-cell identifiers and three Regime-B
+voltage-specific pseudo-cell identifiers) and 292 parent--child pairs
+split across partitions. This companion split should not be used for
+headline benchmarking; it is included to allow users to measure the
+inflation caused by record-level splitting.
+
+Each split is stored as a JSON object containing sample-identifier arrays
+for training, validation, and testing, named \texttt{train\_samples},
+\texttt{val\_samples}, and \texttt{test\_samples}, respectively. The split
+files also include the corresponding conditioning-cell lists and split
+metadata.
+
+\subsection*{Second-life label definition}
+
+The \texttt{second\_life\_class} field is a benchmark classification label
+derived from the PulseBat SOH conditioning value using a fixed threshold of
+SOH = 0.85. Samples with SOH $> 0.85$ are labelled \texttt{reuse}, whereas
+samples with SOH $\leq 0.85$ are labelled \texttt{recondition}. This threshold
+is used to provide a reproducible binary benchmark task and should not be
+interpreted as an independently measured or universally applicable criterion
+for second-life suitability.
+
+% =====================================================================
+% DATA OVERVIEW  [OPTIONAL — TO BE WRITTEN]
+% Target: 1 table + 1 paragraph
+% Source: §V.D Tables III-IV (heavily condensed)
+% Keep ONLY one summary table; SciData strongly prefers minimal here
+% =====================================================================
+\section*{Data Overview}
+
+The released grounded-regime SOH values span [0.744, 0.962], reflecting the
+SOH range of the PulseBat conditioning records used in this release. Among
+the 5,600 grounded samples, 2,600 (46.4\%) are labelled \texttt{reuse} and
+3,000 (53.6\%) are labelled \texttt{recondition}. 
+
+\section*{Technical Validation}
+
+Technical validation was performed through structural checks on every release
+candidate, distributional comparison against real OSF samples at the grounded
+voltage anchors, controlled ablations of the imposed SOH conditioning, and
+additional robustness analyses of representation choice, bridge
+hyperparameters, and generation randomness. Reference predictive models are
+also evaluated under the cell-disjoint benchmark protocol to assess whether
+the generated signatures support the intended benchmark tasks. These analyses
+are intended to support reproducible reuse, quantify sensitivity to design
+choices, and document the assumptions of the bridge. They do not establish
+physical equivalence to experimentally paired magnetic--SOH measurements,
+which are not provided by the source datasets used here.
+
+Figure~\ref{fig:validation_protocol} summarises the validation and benchmark
+workflow used for the released dataset.
+
+\begin{figure*}[!htb]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >=Latex,
+  box/.style={
+    draw,
+    rounded corners=3pt,
+    align=center,
+    inner sep=5pt,
+    line width=0.45pt
+  },
+  datasetbox/.style={
+    box,
+    fill=mbblue,
+    text width=4.0cm,
+    minimum height=1.0cm,
+    font=\footnotesize
+  },
+  sectionbox/.style={
+    box,
+    fill=mbgray,
+    text width=4.2cm,
+    minimum height=0.85cm,
+    font=\bfseries\footnotesize
+  },
+  checkbox/.style={
+    box,
+    fill=mborange,
+    text width=3.0cm,
+    minimum height=0.90cm,
+    font=\scriptsize
+  },
+  splitbox/.style={
+    box,
+    fill=mbgreen,
+    text width=4.0cm,
+    minimum height=1.20cm,
+    font=\scriptsize
+  },
+  evalbox/.style={
+    box,
+    fill=mbgray,
+    text width=4.0cm,
+    minimum height=1.10cm,
+    font=\scriptsize
+  },
+  taskbox/.style={
+    box,
+    fill=mbpurple,
+    text width=2.8cm,
+    minimum height=1.25cm,
+    font=\scriptsize
+  },
+  arrow/.style={
+    -{Latex[length=2mm]},
+    thick
+  }
+]
+
+% ============================================================
+% DATASET
+% ============================================================
+
+\node[datasetbox] (dataset) at (3.0,6.60)
+  {\textbf{MagBridge-Battery}\\
+   6{,}760 samples};
+
+% ============================================================
+% TWO MAIN BRANCHES
+% ============================================================
+
+\node[sectionbox] (validation) at (-1.8,5.00)
+  {Technical validation};
+
+\node[sectionbox] (benchmark) at (7.8,5.00)
+  {Benchmark evaluation};
+
+% Dataset -> branch bus
+\draw[thick]
+  (dataset.south) -- (3.0,5.80);
+
+\draw[thick]
+  (-1.8,5.80) -- (7.8,5.80);
+
+% Downward arrows to the two branches
+\draw[arrow]
+  (-1.8,5.80) -- (validation.north);
+
+\draw[arrow]
+  (7.8,5.80) -- (benchmark.north);
+
+
+% ============================================================
+% LEFT BRANCH: TECHNICAL VALIDATION
+% ============================================================
+
+% ------------------------------------------------------------
+% First validation row
+% ------------------------------------------------------------
+
+\node[checkbox] (integrity) at (-3.8,3.15)
+  {\textbf{Integrity checks}\\
+   IDs / hashes\\
+   valid parents\\
+   finite arrays};
+
+\node[checkbox] (struct) at (-0.1,3.15)
+  {\textbf{Structural checks}\\
+   anchor identity\\
+   SOH monotonicity\\
+   voltage smoothness};
+
+\node[checkbox] (dist) at (3.6,3.05)
+  {\textbf{Distributional checks}\\
+   grounded anchors\\
+   KS tests\\
+   std / correlation};
+
+% Fan-out from Technical validation
+\draw[thick]
+  (validation.south) -- (-1.8,4.25);
+
+\draw[thick]
+  (-3.8,4.25) -- (3.6,4.25);
+
+\draw[arrow]
+  (-3.8,4.25) -- (integrity.north);
+
+\draw[arrow]
+  (-0.1,4.25) -- (struct.north);
+
+\draw[arrow]
+  (3.6,4.25) -- (dist.north);
+
+
+% ------------------------------------------------------------
+% Second validation row
+% ------------------------------------------------------------
+
+\node[checkbox] (abl) at (-1.95,1.05)
+  {\textbf{Ablations}\\
+   label shuffle\\
+   direction ablation\\
+   representation ablation};
+
+\node[checkbox] (robust) at (1.75,1.05)
+  {\textbf{Robustness}\\
+   hyperparameters\\
+   generation seeds};
+
+% Vertical drop from Technical validation branch
+\draw[thick]
+  (-1.8,4.25) -- (-1.8,2.30);
+
+% Horizontal bus for Ablations / Robustness
+\draw[thick]
+  (-1.95,2.30) -- (1.75,2.30);
+
+% Downward arrows into boxes
+\draw[arrow]
+  (-1.95,2.30) -- (abl.north);
+
+\draw[arrow]
+  (1.75,2.30) -- (robust.north);
+
+% ============================================================
+% RIGHT BRANCH: BENCHMARK EVALUATION
+% ============================================================
+
+\node[splitbox] (split) at (7.8,3.45)
+  {\textbf{Primary split}\\
+   \texttt{by\_cell\_primary}\\
+   cell-disjoint\\
+   parent-child leakage-free};
+
+\node[evalbox] (eval) at (7.8,1.50)
+  {\textbf{Reference evaluation}\\
+   classical baselines\\
+   neural baselines\\
+   cell-disjoint protocol};
+
+% Benchmark branch flow
+\draw[arrow]
+  (benchmark.south) -- (split.north);
+
+\draw[arrow]
+  (split.south) -- (eval.north);
+
+
+% ============================================================
+% DOWNSTREAM BENCHMARK TASKS
+% ============================================================
+
+\node[font=\bfseries\large] (taskslabel) at (5.8,-0.1)
+  {Downstream benchmark tasks};
+
+% Reference evaluation -> downstream task heading
+\draw[arrow,rounded corners=4pt]
+  (eval.south)
+  -- (7.8,0.45)
+  -- (5.8,0.45)
+  -- (taskslabel.north);
+
+
+% ------------------------------------------------------------
+% Task boxes
+% ------------------------------------------------------------
+
+\node[taskbox] (t1) at (-1.8,-1.95)
+  {\textbf{T1 SOH regression}\\
+   grounded clean\\
+   metric: $R^2$};
+
+\node[taskbox] (t2) at (1.6,-1.95)
+  {\textbf{T2 Second-life}\\
+   grounded clean\\
+   metric: BA};
+
+\node[taskbox] (t3) at (5.0,-1.95)
+  {\textbf{T3 Anomaly detection}\\
+   clean + anomaly\\
+   + Regime-B\\
+   metric: 3-class BA};
+
+\node[taskbox] (t4) at (8.4,-1.95)
+  {\textbf{T4 Anomaly subtype}\\
+   four subtypes\\
+   metric: 4-class BA};
+
+
+% ------------------------------------------------------------
+% Task fan-out
+% ------------------------------------------------------------
+
+\draw[thick]
+  (taskslabel.south) -- (5.8,-0.35);
+
+\draw[thick]
+  (-1.8,-0.35) -- (8.4,-0.35);
+
+\draw[arrow]
+  (-1.8,-0.35) -- (t1.north);
+
+\draw[arrow]
+  (1.6,-0.35) -- (t2.north);
+
+\draw[arrow]
+  (5.0,-0.35) -- (t3.north);
+
+\draw[arrow]
+  (8.4,-0.35) -- (t4.north);
+
+\end{tikzpicture}%
+}
+
+\caption{Technical validation and benchmark evaluation workflow for
+MagBridge-Battery. Validation includes structural, distributional, ablation,
+and robustness checks, while reference models are evaluated on four
+downstream tasks using the cell-disjoint
+\texttt{by\_cell\_primary} split. BA denotes balanced accuracy.}
+
+\label{fig:validation_protocol}
+\end{figure*}
+
+To provide reference
+points for reuse of the dataset, Table~\ref{tab:baseline} reports performance
+on the four benchmark tasks using the cell-disjoint
+\texttt{by\_cell\_primary} split. Classical baselines are standard
+scikit-learn pipelines, including ridge regression, support-vector regression,
+random forests, logistic regression, ridge classifier, and linear
+support-vector classifier, while neural reference baselines comprise a
+multilayer perceptron, a one-dimensional convolutional network, and a long
+short-term memory network operating on the raw six-channel sequences. These
+results document the utility and difficulty of the released benchmark tasks
+rather than state-of-the-art predictive performance; more complex sequence
+architectures such as Transformers and temporal convolutional networks are
+outside the scope of this reference benchmark. Because the T2 second-life
+label is deterministically derived from SOH using the fixed 0.85 threshold,
+T2 should be interpreted as a benchmark classification view of the SOH
+conditioning rather than as independent evidence of a separately measured
+second-life property.
+
+Neural models were trained using Adam with a learning rate of $10^{-3}$, weight decay of $10^{-4}$, and batch size 64 for at most 15 epochs. Inputs were standardised per channel using statistics computed from the corresponding training subsample. Training was stopped early when the training loss failed to improve by at least $10^{-4}$ for three consecutive epochs. The validation split was not used for model selection, and the SOH target was not standardised.
+
+\begin{table}[!htbp]
+\centering
+\caption{Reference baseline performance on the
+\texttt{by\_cell\_primary} cell-disjoint split. T1 is reported using the
+coefficient of determination ($R^2$); T2--T4 are reported using balanced
+accuracy (BA). Classical results are mean $\pm$ standard deviation over
+five repeated random 80\% subsamples of the training samples, while neural results are
+mean $\pm$ standard deviation over three repeated random 80\% subsamples
+of the training samples. ``Best classical'' and ``Best neural'' denote the strongest reference
+model for each task under the released benchmark workflow. These values
+characterize the released benchmark tasks and are not intended as tuned
+performance ceilings.}
+\label{tab:baseline}
+\small
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Task & Metric & Best classical & Best neural \\
+\midrule
+T1 SOH regression
+& $R^2$ & $0.675\pm0.001$ & $0.170\pm0.240$ \\
+
+T2 Second-life classification
+& BA & $0.907\pm0.001$ & $0.858\pm0.056$ \\
+
+T3 Anomaly detection (3-class)
+& BA & $0.789\pm0.003$ & $0.755\pm0.028$ \\
+
+T4 Anomaly subtype (4-class)
+& BA & $0.725\pm0.028$ & $0.355\pm0.024$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[t]
-\caption{Second-life classification balanced accuracy (best model per shot, by-cell test split, 5-seed mean). Chance is 0.50.}
-\label{tab:second_life_ablation}
+The stronger classical baseline performance should not be interpreted as evidence of an intrinsic advantage over neural models. The classical models operate on compact 57-dimensional summary descriptors comprising nine features per channel across the six signal channels, together with three cross-channel correlation features. In contrast, the neural baselines operate directly on the raw $6\times100$ sequences and were used as reference models rather than extensively tuned architectures.
+
+The moderate training-set size relative to the raw sequence dimensionality may favour the regularised classical pipelines over the higher-capacity neural architectures evaluated here. Together with the limited tuning of the neural baselines, this provides a plausible explanation for the observed performance gap but is not established as its unique cause.
+
+Accordingly, the comparison in Table~\ref{tab:baseline} should be interpreted as descriptive reference benchmarking under the released workflows, rather than as a controlled comparison of the intrinsic capabilities of classical and neural model classes.
+
+\subsection*{Matched-input classical--neural comparison}
+
+To investigate the influence of input representation on
+the observed classical--neural baseline differences,
+we performed an additional matched-input comparison
+on the frozen MagBridge-Battery v1.0 release using the
+\texttt{by\_cell\_primary} split.
+
+Four configurations were evaluated for each benchmark
+task: a classical Ridge or logistic-regression model
+and a multilayer perceptron (MLP), each trained using
+either the original 57-dimensional engineered descriptors
+or the flattened 600-dimensional raw magnetic signals.
+The same MLP architecture, comprising hidden layers of
+64 and 32 units, was used for both input representations.
+
+Five predetermined training-subsampling seeds were used.
+For each seed, all four configurations received the
+same 80\% training-row subsample and were evaluated
+against identical held-out test samples. Model
+hyperparameters were selected using the archived
+validation partition. Four prespecified candidates
+were evaluated per configuration. The MLP used
+validation-based early stopping with a maximum of
+80 training epochs. SOH targets were standardised
+using training-only statistics for MLP regression
+and transformed back before evaluation.
+
+\begin{table}[!htbp]
 \centering
-\begin{tabular}{lcccc}
+\caption{Matched-input comparison on the released
+\texttt{by\_cell\_primary} split. Classical models are
+Ridge regression for T1 and logistic regression for
+T2--T4. Neural results use a fixed two-hidden-layer MLP.
+Values are mean $\pm$ standard deviation across five
+training subsamples. T1 uses $R^2$; T2--T4 use
+balanced accuracy. These results are separate from
+the original descriptive reference baselines.}
+\label{tab:matched_input}
+\small
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-Scenario & $k=2$ & $k=5$ & $k=10$ & $k=20$ \\
+Task &
+Classical 57D &
+MLP 57D &
+Classical 600D &
+MLP 600D \\
 \midrule
-A0 baseline & $0.72$ & $0.84$ & $0.84$ & $0.93$ \\
-A1 random direction & $0.76$ & $0.85$ & $0.85$ & $0.92$ \\
-A2 shuffled SOH & $0.56$ & $0.61$ & $0.56$ & $0.56$ \\
-A3 inverted direction & $0.74$ & $0.82$ & $0.85$ & $0.94$ \\
+T1 &
+$0.675\pm0.002$ &
+$0.681\pm0.004$ &
+$-0.558\pm0.038$ &
+$-0.020\pm0.017$ \\
+
+T2 &
+$0.904\pm0.003$ &
+$0.912\pm0.003$ &
+$0.530\pm0.013$ &
+$0.574\pm0.012$ \\
+
+T3 &
+$0.723\pm0.004$ &
+$0.759\pm0.066$ &
+$0.681\pm0.005$ &
+$0.425\pm0.133$ \\
+
+T4 &
+$0.518\pm0.022$ &
+$0.662\pm0.035$ &
+$0.322\pm0.018$ &
+$0.402\pm0.039$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Two patterns are visible.
+Under the matched 57-dimensional input representation,
+the MLP achieved higher mean test scores than the
+classical comparator on all four tasks. Both model
+families generally performed better using the engineered
+descriptors than using the flattened raw signal values.
+These findings indicate that feature representation
+substantially influences the observed performance gap
+under the tested configurations.
 
-\textbf{A2 (shuffled SOH) collapses cleanly.} SOH regression $R^2$ drops from $+0.77$ to $-0.04$ at $k=20$, a swing of more than 0.8. Second-life accuracy falls to chance across all shot levels. Both tasks confirm that the bridge encodes input SOH non-trivially: when the SOH--cell binding is broken at generation time, downstream readouts cannot recover SOH from the synthetic signatures. This is the dataset's primary validation: it is not producing label-aligned artefacts.
+For T1 and T2, exploratory paired bootstrapping over
+the nine held-out conditioning cells yielded performance differences (MLP minus classical) of 0.0059 in $R^2$ and 0.0085 in
+balanced accuracy, respectively, using the same
+57-dimensional descriptors. The corresponding 95\%
+bootstrap intervals were $[-0.1262,0.0235]$ and
+$[-0.0038,0.0225]$, both including zero.
 
-\textbf{A1 and A3 perform almost identically to A0.} Across all four shot levels and both tasks, random and inverted perturbation directions match the principled-direction baseline within statistical noise (the largest cross-scenario gap is 0.05 $R^2$). We address what this means in \S\ref{sec:discussion:direction}.
+The comparison does not establish superiority of either
+model family. It evaluates one MLP architecture against
+specific regularised classical models, and the training
+and validation-selection procedure differs from the
+original reference benchmark. In addition, the five
+training repetitions share the same test cells and do
+not constitute independent physical validation cohorts.
+The original reference results are therefore retained
+as descriptive benchmarks rather than replaced by
+this controlled comparison.
 
-\subsection{Full-release benchmark on \texttt{by\_cell\_primary}}
-\label{sec:results:fullbench}
+\subsection*{Structural invariants}
 
-The ablation pilots of \S\ref{sec:results:ablation} characterise the bridge's response to controlled perturbations. We additionally report headline numbers on the full released v1.0 dataset under the primary leakage-safe split (Table~\ref{tab:fullbench}), using standard sklearn pipelines and reporting the best model per task across five repeated cell-subsampling seeds (each seed sees a different 80\% of the training cells). These are the numbers users should compare against when developing methods on MagBridge-Battery.
+Five structural invariants are tested automatically to verify release
+consistency and implemented bridge behaviour. First, at each OSF anchor
+voltage, the bridge's deterministic anchor-replica function (no perturbation,
+no noise) reproduces the empirical mean trajectory to within machine
+precision; the maximum absolute deviation observed is
+$1.87 \times 10^{-12}$.
 
-\begin{table}[t]
-\caption{Full MagBridge-Battery v1.0 benchmark on the \texttt{by\_cell\_primary} cell-disjoint split. Best model per task; 5 cell-subsampling seeds; mean $\pm$ std. Models considered: Ridge / SVR-RBF / RF for T1; LogReg / RidgeCls / LinSVC / RF for T2--T4.}
-\label{tab:fullbench}
+Second, for fixed (voltage, SOC, seed), increasing the imposed
+SOH-conditioning magnitude produces monotonically increasing distance from
+the SOH${=}1.0$ reference, confirming that the implemented conditioning
+operation behaves as specified.
+
+Third, a 0.01\,V change in voltage produces a smaller output change than a
+0.10\,V change (observed L2 changes $\approx 261$ versus $\approx 1881$),
+providing a numerical check of local voltage-response continuity.
+
+Fourth, the regime classifier returns the expected regime at boundary
+voltages and rejects out-of-range voltages. Fifth, anomaly flags are
+consistent with the released schema: every extrapolation-regime and synthetic
+anomaly sample carries \texttt{anomaly\_flag} true, whereas every grounded
+clean sample carries it false.
+
+In addition, the released artifacts were audited to confirm zero duplicate
+sample identifiers, zero duplicate full-signal hashes, no NaN or infinity
+entries in the signal channels, uniform length-100 arrays, and valid clean
+parents for all 600 synthetic anomaly samples.
+
+\subsection*{Distributional comparison at grounded anchors}
+
+At the two grounded-regime OSF anchors (3.10\,V and 3.34\,V), 41 synthetic
+samples per anchor were generated at SOH${=}1.0$ and compared with the
+corresponding real OSF samples. Per-channel two-sample
+Kolmogorov--Smirnov tests yielded $p>0.05$ for all six channels at both
+anchors; these tests provide no evidence of a distributional difference
+at the tested sample size, but should not be interpreted as establishing
+distributional equivalence. Per-channel synthetic-to-real
+standard-deviation ratios lie in $[0.98,1.02]$, indicating close agreement
+in marginal amplitude variability.
+
+The mean absolute difference between synthetic and real cross-channel
+correlation matrices is $0.46$ at 3.10\,V and $0.35$ at 3.34\,V,
+indicating that cross-channel dependence is less closely reproduced than
+the marginal channel statistics. This residual is consistent with the
+bridge's independent-channel noise assumption and is documented as a
+known limitation in the Usage Notes.
+
+
+\subsection*{SOH mechanism-knockout and direction controls}
+
+We performed matched ablations on 5,600 generation
+requests from 56 PulseBat conditioning cells, using a
+fixed cell-disjoint split of 39 training, 8 validation,
+and 9 test cells. All configurations shared the
+conditioning requests, random seeds, and downstream
+evaluation protocol. The released configuration (A0)
+served as the reference.
+
+
+\begin{table}[!htbp]
 \centering
-\begin{tabular}{llll}
-\toprule
-Task & Best model & Metric & Value \\
-\midrule
-T1 SOH regression              & Ridge    & $R^2$             & $+0.675 \pm 0.001$ \\
-T2 Second-life classification  & RidgeCls & balanced accuracy & $0.907 \pm 0.001$ \\
-T3 Anomaly detection (3-class) & RF       & balanced accuracy & $0.789 \pm 0.003$ \\
-T4 Anomaly subtype (4-class)   & RF       & balanced accuracy & $0.725 \pm 0.028$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-T4 (anomaly subtype classification --- distinguishing among the four subtypes \texttt{sensor\_dropout}, \texttt{calibration\_drift}, \texttt{temporal\_warp}, and \texttt{periodic\_interference}) is reported as an additional benchmark task. A random forest achieves $0.725 \pm 0.028$ on 4-way classification (chance $=0.25$), substantially above chance but with clear headroom for stronger readouts (sequence models, learned embeddings). T1 also leaves significant headroom (R$^2$ of $\approx 0.68$ with ridge regression on static features), suggesting that sequence-aware methods could meaningfully improve SOH regression. T2 is nearly saturated by classical baselines because second-life classification is essentially a thresholded view of SOH; once T1 is solved well, T2 follows. T3 sits in the middle, indicating that anomaly detection on this dataset is genuinely non-trivial under the cell-disjoint protocol but not intractable.
-
-A note on the T3 anomaly-detection metric. T3 is a 3-way task under the released benchmark protocol: synthetic-anomaly samples are derived from clean parents and differ from them only by the perturbation type, while Regime-B samples differ from grounded-regime samples primarily by voltage. A simplified regime-separation sanity check using a random forest can reach $\text{AUROC} \approx 1.00$ when only the Regime-B-vs-grounded distinction is being decided, but we do not treat this as the primary benchmark, because it reflects strong voltage-anchor separation rather than discriminative learning of anomaly structure. The headline T3 balanced accuracy of $0.789$ in Table~\ref{tab:fullbench} is computed on the full 3-way protocol that requires distinguishing perturbed-grounded, clean-grounded, and Regime-B samples on the cell-disjoint test split.
-
-\subsection{Deep-learning baselines}
-\label{sec:results:dl}
-
-We additionally evaluated three off-the-shelf neural baselines to quantify whether the raw length-100 signatures are immediately exploitable by standard sequence models: a 3-layer MLP on the flattened raw signal, a 3-block 1D CNN, and a single-layer LSTM. All three operate directly on the six-channel sequences after channel-wise standardization using training-set statistics. We trained with Adam (learning rate $10^{-3}$, weight decay $10^{-4}$, batch size 64) for up to 15 epochs with early stopping. We did not tune architecture depth, receptive field, or class weighting per individual task; these baselines are intended as reproducible off-the-shelf references rather than tuned ceilings. Results across three repeated cell-subsampling seeds are shown in Table~\ref{tab:dlbench}.
-
-\begin{table}[t]
-\caption{Off-the-shelf deep-learning baselines on the \texttt{by\_cell\_primary} cell-disjoint split. Results are mean $\pm$ standard deviation over three repeated cell-subsampling seeds. Per-task best DL model is shown in bold where it meaningfully exceeds chance. The best classical baseline from Table~\ref{tab:fullbench} is reproduced for comparison.}
-\label{tab:dlbench}
-\centering
+\caption{SOH-conditioning ablations under the matched
+cell-disjoint regeneration protocol. T1 reports
+SOH-regression $R^2$, and T2 reports second-life
+balanced accuracy (BA). Values are mean $\pm$
+standard deviation over five downstream model
+seeds. D2 reports the range of mean scores across
+five random-direction seeds (1001--1005).
+Model-seed variability does not represent
+between-cell uncertainty.}
+\label{tab:soh_knockout}
 \footnotesize
-\begin{tabular}{lllll}
+\begin{tabular}{@{}lcc@{}}
 \toprule
-Task & MLP & 1D-CNN & LSTM & Classical \\
+Configuration & T1 $R^2$ & T2 BA \\
 \midrule
-T1 SOH, $R^2$
-& $-2.51 \pm 1.24$
-& $\phantom{-}0.17 \pm 0.24$
-& $-0.09 \pm 0.03$
-& $\phantom{-}0.675$ \\
-T2 Second-life, BA
-& $0.599 \pm 0.016$
-& $\mathbf{0.858 \pm 0.056}$
-& $0.833 \pm 0.053$
-& $0.907$ \\
-T3 Anomaly, BA
-& $\mathbf{0.755 \pm 0.028}$
-& $0.365 \pm 0.003$
-& $0.672 \pm 0.006$
-& $0.789$ \\
-T4 Subtype, BA
-& $\mathbf{0.355 \pm 0.024}$
-& $0.340 \pm 0.024$
-& $0.299 \pm 0.021$
-& $0.725$ \\
+A0: Released configuration
+ & $0.6331 \pm 0.0017$ & $0.8222 \pm 0.0046$ \\
+S1: SOH-label shuffle
+ & $-1.0917 \pm 0.0335$ & $0.4911 \pm 0.0053$ \\
+D1: Reversed direction
+ & $0.6932 \pm 0.0011$ & $0.8261 \pm 0.0047$ \\
+D2: Random directions (range)
+ & $0.6424$--$0.7434$ & $0.8226$--$0.8451$ \\
+K1: No latent displacement
+ & $0.6457 \pm 0.0017$ & $0.8241 \pm 0.0055$ \\
+K2: No morphology blending
+ & $-1.0931 \pm 0.0314$ & $0.4916 \pm 0.0099$ \\
+K3: No amplitude jitter
+ & $0.6688 \pm 0.0013$ & $0.8279 \pm 0.0017$ \\
+K4: No spectral broadening
+ & $0.6395 \pm 0.0018$ & $0.8200 \pm 0.0024$ \\
+K5: All SOH operations disabled
+ & $-1.1011 \pm 0.0299$ & $0.4822 \pm 0.0124$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The neural baselines establish a useful lower bound for direct sequence-learning methods rather than a tuned deep-learning ceiling. The best neural models approach the static-feature classical baselines on T2 and T3: the 1D CNN reaches $0.858$ balanced accuracy on second-life classification compared with $0.907$ for RidgeCls, and the MLP reaches $0.755$ balanced accuracy on the 3-class anomaly task compared with $0.789$ for the random forest. In contrast, the gap is substantial on T1 and T4: the best neural model reaches only $R^2 = 0.17$ on SOH regression compared with $0.675$ for ridge regression, and $0.355$ balanced accuracy on anomaly-subtype classification compared with $0.725$ for the random forest. The MLP shows unstable behaviour on T1 (negative $R^2$ with high variance), consistent with overfit on the flattened raw signal under limited training data.
+Shuffling SOH labels (S1) reduced performance
+substantially, confirming dependence on the imposed
+label--signal correspondence. Reversing the fitted
+direction (D1) or replacing it with random directions
+(D2) yielded higher mean T1 and T2 scores than the
+released configuration (A0). For T1, D1 achieved
+$R^2=0.6932$, while the five D2 directions yielded
+$R^2$ values ranging from 0.6424 to 0.7434,
+compared with 0.6331 for A0. These findings
+demonstrate that SOH-label recoverability does not
+require the particular fitted LDA direction used
+in the released bridge.
 
-We interpret this gap as a benchmark signal rather than a dataset deficiency. The 57-feature static descriptor used by the classical baselines encodes compact domain summaries --- channel means, variation, energy, slopes, and cross-channel correlations --- that are effective at this release size and split. Closing the gap likely requires representation-learning methods with stronger inductive bias, pretraining, contrastive objectives, or sequence encoders tuned specifically for magnetic-signature morphology. MagBridge-Battery is therefore not solved by off-the-shelf application of standard deep-learning architectures, while leaving clear headroom for stronger learned representations.
+Among the mechanism knockouts, disabling morphology
+blending (K2) caused a substantial performance
+collapse, comparable to disabling all SOH-dependent
+operations (K5). In contrast, removing latent
+displacement (K1) or amplitude jitter (K3) increased
+mean performance on both tasks relative to the
+released configuration (A0). Removing spectral
+broadening (K4) increased T1 performance but
+slightly reduced T2 balanced accuracy. These results
+identify SOH-dependent morphology blending as the
+dominant conditioning pathway under the tested
+configuration, while demonstrating that the released
+parameters do not maximise downstream predictive
+performance. The knockout effects are not independent
+or additive because latent displacement influences
+the output through the decoding and blending pathway.
 
-%==============================================================================
-\section{Discussion}
-\label{sec:discussion}
+Exploratory paired cluster bootstrapping over the nine
+held-out conditioning cells yielded 95\% confidence
+intervals excluding zero for the performance differences
+between A0 and both K2 and K5 on T1 and T2.
+These results support the importance of the
+SOH-dependent blending pathway, although
+the limited number of test cells restricts
+the precision and generalisability of the estimates.
 
-\subsection{What the A2 collapse establishes}
+\paragraph{Secondary cell-grouped cross-validation.}
 
-When PulseBat SOH labels are randomly permuted across cells before the bridge sees them, downstream SOH regression collapses from $R^2 \approx 0.77$ to $\approx 0$. This makes the alternative explanations --- bridge-generated samples being SOH-decodable through correlated covariates, dataset leakage, or label memorisation --- unlikely under the tested protocol. In practical terms, a researcher training an SOH estimator on MagBridge-Battery is using bridge-consistent SOH-conditioned signal rather than a purely label-aligned artefact.
+Eight-fold GroupKFold evaluation across all 56 physical
+conditioning cells supported these findings. A0 achieved
+mean T1 $R^2=0.7839$ and T2 BA $=0.8767$; K1 yielded
+$0.7863$ and $0.8753$, respectively. Performance
+decreased substantially for K2 ($-0.0804$, $0.4927$)
+and K5 ($-0.0829$, $0.4925$). These results reinforce
+the importance of morphology blending beyond the
+fixed nine-cell test partition.
 
-\subsection{What A1$\approx$A0 means}
-\label{sec:discussion:direction}
+\paragraph{Cone-orientation diagnostic.}
 
-The data show that random and inverted perturbation directions in the 4-D LDA subspace produce SOH-decoding accuracy within $\sim 0.05$ $R^2$ of the principled fitted direction. The architectural reason is geometric: the OSF dataset contains exactly five anchor clusters in the 4-D subspace, separated by $\sim 280$ units with within-cluster scatter $\sim 1.8$ (a separation ratio of 157). Any perturbation of meaningful magnitude moves the embedding into a different anchor's neighbourhood, regardless of direction. The downstream SOH-decoding signal is generated by the resulting blend, with amplitude scaling proportional to $(1 - \text{SOH})$.
+Aligning the decoder cone with the signed latent
+displacement instead of the released positive
+direction changed neighbour selection for 3,907
+of 5,600 requests (69.8\%) and increased T1 $R^2$
+from 0.6331 to 0.6998. This demonstrates sensitivity
+to cone orientation but does not establish physical
+validity or justify modifying the frozen release.
 
-In other words, the bridge produces decodable SOH content via \emph{anchor blending under SOH-driven blend amplitude} --- a property inherited from the bank's small, sharply-clustered geometry, not from any specific embedding direction. We treat this as a property of retrieve-and-blend bridge architectures over small morphology banks, of which MagBridge-Battery is one. A more flexible decoder (e.g.\ a conditional generative model trained on OSF data) would in principle let the conditioning direction shape output distributions non-trivially, and would change this finding; we treat this as the most promising single-axis future-work direction (\S\ref{sec:limitations}).
+Overall, these experiments demonstrate recoverability
+of synthetically imposed conditioning rather than
+an experimentally validated magnetic ageing mechanism.
 
-\subsection{Implications for synthetic-data work in this field}
+\subsection*{Representation-dependence ablation}
 
-Two implications follow. First, bridge architectures that retrieve from a finite morphology bank inherit the bank's geometry as a structural prior. Richer banks --- expanded by collaborator-collected real measurements, augmented by physics-simulation, or replaced by a learned generative model --- would directly test whether more anchor diversity creates room for direction-of-perturbation to matter.
+To test whether benchmark utility depends on the released
+quantum-reservoir encoder (QRec), we conducted a matched
+regeneration experiment. Four alternatives were evaluated:
+principal-component analysis (PCA), Gaussian random
+projection, radial-basis-function (RBF) kernel PCA, and
+a compact autoencoder. These cover linear, random,
+nonlinear-kernel, and learned representations.
 
-Second, the controlled-ablation methodology developed here is portable. The four-scenario design (baseline, random direction, label shuffle, inverted direction) requires no domain-specific knowledge once the bridge has explicit conditioning inputs and a perturbation mechanism. We recommend it as a default validation protocol for synthetic-data work that claims to encode any kind of label structure into outputs.
+Each representation produced a 171-dimensional embedding
+followed by the same four-dimensional LDA stage. All
+variants used identical 5,600 generation requests,
+conditioning records, per-sample seeds, bridge settings,
+decoder, and post-processing. The fixed 39/8/9
+train/validation/test cell-disjoint split across
+56 conditioning cells and the evaluation procedure
+were also identical; only the representation changed. Results are intended for within-ablation comparison
+and are not reproductions of the reference values in
+Table~\ref{tab:baseline}, which were evaluated directly
+on the frozen DOI-archived release.
 
-\subsection{Comparison to the QuaLiProM trajectory}
+For each representation, the reported value is the mean performance of the best candidate downstream model under the matched evaluation protocol (T1: ridge regression, RBF support-vector regression, or random forest; T2: logistic regression, ridge classifier, linear support-vector classifier, or random forest). The hyperparameter-sensitivity and generation-seed analyses instead use fixed ridge-regression and logistic-regression readouts.
 
-The QuaLiProM consortium~\cite{qualiprom} is building, in private, the kind of dataset MagBridge-Battery attempts to substitute for: paired magnetic measurements with electrochemical degradation labels at industrial scale. Our work and theirs occupy different positions on a spectrum: they pay the cost of measurement and gain ground-truth signal; we pay the cost of architectural assumptions and gain public availability. When QuaLiProM-style data eventually becomes public, MagBridge-Battery becomes immediately falsifiable in a constructive sense --- one can compare bridge outputs to real measurements at matched (SOH, SOC, voltage) tuples and quantify the mismatch.
+The RBF kernel-PCA control used a fixed kernel parameter of
+$\gamma=1/600$, while the autoencoder used a fixed
+$600\!-\!256\!-\!171\!-\!256\!-\!600$ reconstruction architecture.
+Neither alternative was tuned against downstream T1 or T2 performance.
 
-%==============================================================================
-\section{Limitations and intended use}
-\label{sec:limitations}
+For SOH regression (T1), the QRec, PCA, random-projection, RBF
+kernel-PCA, and autoencoder variants obtained mean $R^2$ values of
+$0.6331$, $0.6717$, $0.6975$, $0.6686$, and $0.6414$, respectively.
+For second-life classification (T2), balanced accuracy was $0.8246$,
+$0.8261$, $0.8264$, $0.8296$, and $0.8195$, respectively. Thus, no
+predictive advantage of the released QRec representation was observed
+under this matched ablation. T2 performance remained similar across the
+five representations, while PCA, random projection, and RBF kernel PCA
+produced higher T1 performance than QRec; the autoencoder produced a
+smaller T1 increase with slightly lower T2 performance.
 
-\subsection{Intended uses}
+These results indicate that the benchmark's decodable conditioning structure is not uniquely dependent on the quantum-reservoir representation. QRec is retained in MagBridge-Battery v1.0 because it is the representation used to generate the
+frozen DOI-archived dataset and is therefore required for exact reproduction of that release, not because it provides superior predictive performance. The matched ablation shows that simpler classical and learned representations are viable alternatives and, in some settings, achieve higher downstream performance. Accordingly, no quantum-performance benefit or quantum-advantage
+claim is made for QRec in this work.
 
-MagBridge-Battery v1.0 is intended for:
-\begin{itemize}
-    \item Benchmark \textbf{SOH regression} on grounded-regime clean samples (T1).
-    \item Benchmark \textbf{second-life classification} on grounded-regime clean samples (T2).
-    \item Benchmark \textbf{anomaly detection} using the 600 synthetic anomalies and the 560 Regime-B extrapolation samples (T3).
-    \item Studying \textbf{OOD extrapolation} via the three Regime-B voltage anchors.
-    \item Quantifying \textbf{split-leakage effects} by training on both shipped splits and reporting the gap.
-\end{itemize}
+\subsection*{Hyperparameter sensitivity}
 
-\subsection{Out-of-scope uses}
+To assess whether benchmark behaviour depends strongly on the released bridge settings, we performed a one-factor-at-a-time sensitivity analysis over all 5,600 grounded generation requests. The tested values were
+$\gamma\in\{400,800,1200\}$, $k\in\{4,8,16\}$,
+$\tau\in\{25,50,100\}$, cone half-angle
+$\in\{45^\circ,75^\circ,90^\circ\}$, and sensor-noise fraction
+$\in\{0.025,0.05,0.10\}$. All other bridge settings, conditioning
+records, seeds, and the same fixed 39/8/9 train/validation/test
+cell-disjoint regeneration split were held fixed. The released configuration is
+$\gamma=800$, $k=8$, $\tau=50$, cone half-angle $75^\circ$, and
+sensor-noise fraction $0.05$.
 
-\begin{itemize}
-    \item SOH regression on Regime-B samples (\texttt{soh} is \texttt{NaN} by design).
-    \item Treating \texttt{B\_s1C5} or \texttt{B\_s2C6} as physical magnitudes.
-    \item Treating \texttt{time\_norm} as per-sample timing information.
-    \item Cross-chemistry transfer --- only LFP is represented in v1.0.
-    \item Substituting MagBridge-Battery for real magnetic-sensing measurements in safety-critical decisions.
-\end{itemize}
+\begin{table}[!htb]
+\centering
+\caption{One-factor-at-a-time sensitivity within the matched 5,600-request
+regeneration experiment.
+Ranges report the minimum and maximum mean performance observed across the
+three tested values of each parameter. T1 is SOH-regression $R^2$ and T2 is
+second-life balanced accuracy (BA).}
+\label{tab:sensitivity}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Parameter & Tested values & T1 $R^2$ range & T2 BA range \\
+\midrule
+$\gamma$ & 400 / 800 / 1200
+& 0.6260--0.6406 & 0.8222--0.8247 \\
+$k$ & 4 / 8 / 16
+& 0.6331--0.6394 & 0.8211--0.8258 \\
+$\tau$ & 25 / 50 / 100
+& 0.6329--0.6334 & 0.8214--0.8222 \\
+Cone half-angle & $45^\circ$ / $75^\circ$ / $90^\circ$
+& 0.6331--0.6495 & 0.8177--0.8222 \\
+Sensor-noise fraction & 0.025 / 0.05 / 0.10
+& 0.6309--0.6331 & 0.8222--0.8241 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsection{Known limitations}
+Across the tested ranges, the largest within-parameter change in T1 was
+$0.0164$ in $R^2$ for the cone half-angle, while the largest T2 change was
+$0.0047$ in balanced accuracy for $k$. The softmin temperature $\tau$ had
+negligible influence over the tested range. These results indicate that the
+benchmark conclusions are not strongly dependent on the particular released
+values of these parameters. The released settings should therefore be
+interpreted as fixed reproducibility defaults rather than as
+performance-optimised hyperparameters.
 
-\textbf{Single-chemistry, single-cell coverage.} The v1.0 release uses LFP cells exclusively, and the OSF morphology bank is from one physical cell. The bridge therefore captures one cell's morphology, with no inter-cell variability in the magnetic signature.
+\subsection*{Generation-seed uncertainty}
 
-\textbf{No ground-truth external validation.} The validation we report is structural (sanity invariants), distributional (KS tests at anchors), and ablation-based (A2). What we cannot do, by construction, is compare bridge outputs to real magnetic measurements from cells with known SOH labels --- because no such public data exists. The benchmark numbers reported here have meaning as internal metrics under documented bridge assumptions; their generalisation to real magnetic data will only be testable when paired data becomes available. Every generated sample carries its full provenance so that a future researcher with paired data can identify matching real samples and compute residuals directly.
+To quantify variability arising from stochastic generation, we independently regenerated the complete 5,600-sample grounded benchmark under five different master generation seeds. Each regeneration used the same 560 PulseBat-LFP conditioning records from 56 conditioning cells, ten variants per record, QRec/LDA representation, bridge hyperparameters, the same 39/8/9 train/validation/test split of those conditioning cells,
+and downstream evaluation protocol. Only the random seed family used during synthetic generation was changed. For each regenerated dataset, T1 and T2 performance was averaged over the same five fixed model/subsampling seeds.
 
-\textbf{Regime-B carries no SOH label.} By design, the 560 Regime-B extrapolation samples have \texttt{soh}, \texttt{u\_features}, and \texttt{second\_life\_class} set to \texttt{NaN}. Users should filter to \texttt{regime == "grounded"} before fitting T1 / T2 models.
+Across the five independently regenerated datasets, T1 SOH-regression
+performance was $R^2 = 0.6252 \pm 0.0145$, with individual-run means ranging
+from $0.6069$ to $0.6440$. T2 second-life balanced accuracy was
+$0.8203 \pm 0.0157$, with individual-run means ranging from $0.7985$ to
+$0.8376$. The reported standard deviations represent between-regeneration
+variability rather than within-model fitting variability.
 
-\textbf{Architectural ceiling from retrieve-and-blend decoder.} As discussed in \S\ref{sec:discussion:direction}, the A1$\approx$A0 finding partly reflects a property of the retrieve-and-blend decoder. A conditional generative-model decoder would in principle let SOH conditioning shape outputs non-trivially even with limited training data; this is the most promising single-axis future direction.
+These results show that stochastic generation introduces measurable variation in absolute benchmark scores, while all five complete regenerations retain comparable predictive structure for both reference tasks. Generation-seed uncertainty should therefore be considered when interpreting small performance differences on the benchmark. This analysis assesses robustness of the synthetic construction and does not establish physical validity of the imposed SOH-conditioned magnetic morphology.
 
-\textbf{Channel correlation structure.} The v1 bridge family treats per-channel perturbations as independent in time-domain noise application. At grounded anchors, the mean absolute difference between bridge and real channel-correlation matrices is approximately 0.4. This does not affect headline downstream-task results but is a known imperfection.
+\subsection*{Relationship to real measurements}
 
-\textbf{Constant time axis.} \texttt{time\_norm} is the same vector for every sample (a fixed reference grid). It is included for loader convenience and carries no per-sample information.
+The source datasets used here do not provide experimentally paired magnetic measurements and degradation labels for the same cells. Consequently, the SOH-conditioned synthetic signatures cannot be validated as measurements of real magnetic ageing trajectories. We therefore distinguish the aspects of
+the bridge that are directly constrained by measured OSF data from those introduced synthetically by the generation procedure.
 
-\textbf{SOC coverage.} PulseBat samples cluster at SOC $\in \{5, 10, \ldots, 50\}\%$. Conditioning fidelity outside this range is untested.
+Three observations characterize this relationship. First, at each of the five OSF voltage anchors, the deterministic anchor-replica function reproduces the corresponding empirical OSF mean trajectory to within machine precision (maximum absolute deviation $1.87\times10^{-12}$). This verifies the implementation of the measured anchor morphology but does not imply
+physical validation of subsequent SOH-conditioned transformations. Second, 
+the grounded-regime base morphology is constructed by interpolation between
+measured OSF anchors, and the perturbation decoder retrieves from the OSF
+morphology bank. Thus, measured magnetic morphology directly constrains the
+generation procedure, although subsequent conditioning, scaling, spectral
+broadening, and noise remain synthetic operations. Third, at the two
+grounded anchors, per-channel Kolmogorov--Smirnov tests yielded $p>0.05$
+and synthetic-to-real standard-deviation ratios lie within $[0.98,1.02]$.
+These results indicate close agreement in the tested marginal channel
+statistics at the available sample size, but do not establish distributional
+equivalence. Cross-channel correlation is reproduced less closely, as
+quantified above.
 
-\subsection{Future-work directions}
+These checks do not establish that the SOH-conditioned morphology changes
+produced by the bridge correspond to those of a real cell at the same SOH.
+The benchmark results should therefore be interpreted as internal reference
+performance under the documented synthetic construction, rather than as
+estimates of performance on experimentally measured magnetic ageing data.
+The released provenance metadata and generation configuration are intended
+to enable direct comparison with paired magnetic--electrochemical
+measurements if such data become available.
 
-In rough order of cost-to-benefit:
-\begin{enumerate}
-    \item Conditional generative-model decoder (replace retrieve-and-blend with a small VAE or diffusion model on OSF samples).
-    \item Lab collaboration for paired data --- even 50--100 cells with paired SOH labels and OPM measurements would enable ground-truth validation.
-    \item Synthetic magnetic anchors via FEM simulation (expand the morphology bank).
-    \item Chemistry-transfer extension once paired data exists at any chemistry beyond LFP.
-    \item Integration with QuaLiProM-style data when it becomes public.
-\end{enumerate}
+% =====================================================================
+% USAGE NOTES
+% =====================================================================
 
-%==============================================================================
-\section{Conclusion}
-\label{sec:conclusion}
+\section*{Usage Notes}
+\subsection*{Loading the data}
 
-We released \textbf{MagBridge-Battery v1.0}, a 6{,}760-sample synthetic dataset bridging the OSF magnetic-morphology archive with PulseBat electrochemical degradation labels, motivated by the absence of any public dataset pairing magnetic measurements with state-of-health information. The release comprises 5{,}600 PulseBat-conditioned grounded samples, 600 synthetic sensor-anomaly samples derived from clean parents, and 560 low-voltage Regime-B extrapolation samples, together with a cell-disjoint, parent-child-leakage-free primary benchmark split. A label-shuffle controlled ablation confirms that the bridge encodes input SOH into output morphology non-trivially: SOH regression collapses from $R^2 \approx 0.77$ to $\approx 0$ when the SOH--cell binding is broken at generation time. A direction-perturbation ablation establishes a complementary architectural finding: in a retrieve-and-blend bridge over a small, sharply-clustered morphology bank, the principled latent direction is not privileged for downstream decoding, because the bank's geometry dominates the signal. The dataset, bridge implementation, and a benchmark suite covering SOH regression, second-life classification, and anomaly detection are released to support method development while public paired magnetic--electrochemical data remains unavailable.
+The released Parquet shards can be concatenated into a single table with any
+Parquet-aware data library. A minimal loader script,
+\texttt{load\_example.py}, is provided in the code repository; it loads all
+shards, applies the \texttt{by\_cell\_primary} split, filters to the grounded
+regime, and plots an example signature following the released benchmark
+workflow. The signal channels and the \texttt{time\_norm} column are stored
+as length-100 numeric arrays.
 
-%==============================================================================
-\section*{Code and data availability}
+\subsection*{Recommended workflows}
 
-MagBridge-Battery v1.0 is released on Zenodo under CC-BY-4.0 (DOI: \texttt{10.5281/zenodo.20260147}). The bridge implementation, ablation scripts, and benchmark suite are released on GitHub under Apache-2.0 at \url{https://github.com/SakthiGs/MagBridge-Battery}. The release bundle contains data shards (Parquet), metadata, both benchmark splits, the generation manifest pinning bridge version and configuration hash, a minimal Python loader, SHA-256 checksums, a citation file, dataset documentation, and a LICENSE file documenting the upstream sources (OSF magnetometry archive, PulseBat dataset) and their respective license declarations.
+State-of-health regression (T1) and second-life classification (T2) should
+be performed on grounded-regime clean samples only; users should filter to
+\texttt{regime == "grounded"} and exclude anomalies before fitting these
+tasks, because extrapolation-regime samples carry \texttt{NaN} SOH by
+design. Anomaly detection (T3) uses a mixture of held-out grounded clean
+samples, synthetic anomalies, and extrapolation-regime samples. The three-class
+T3 formulation is intentional: a binary comparison between extrapolation-regime
+and grounded samples can largely reflect voltage-regime separation, whereas
+T3 additionally requires synthetic anomalies to be distinguished from clean
+grounded samples. Anomaly subtype classification (T4) should be performed on
+the synthetic sensor-anomaly subset using the four defined perturbation
+classes.
 
-\section*{How to cite}
+For reference benchmarking on the frozen, DOI-archived
+MagBridge-Battery v1.0 dataset, users should adopt the
+\texttt{by\_cell\_primary} split for all headline
+results. This split prevents conditioning-cell overlap
+and keeps synthetic anomaly samples in the same
+partition as their clean parents.
 
-Users of MagBridge-Battery are kindly requested to cite both the dataset DOI and this paper. The dataset DOI uniquely identifies the v1.0 data artifact; the paper documents the bridge construction, validation, and benchmark protocol. See \texttt{CITING.md} in the release bundle for copy-paste BibTeX.
+The \texttt{by\_record\_optimistic\_baseline} split
+is provided only as a leakage-prone comparison and
+should not be used for headline benchmarking.
+
+Controlled bridge-regeneration experiments reported
+in Technical Validation use a separate, fixed
+cell-disjoint split comprising 39 training, 8 validation,
+and 9 test conditioning cells. Results from these
+regeneration experiments are intended for within-study
+comparisons and should not be directly compared with
+the reference benchmark scores obtained using
+\texttt{by\_cell\_primary}.
+
+
+\subsection*{What the benchmark tasks measure}
+
+T1 and T2 measure recovery of the SOH conditioning imposed by the synthetic bridge and the corresponding threshold-derived second-life label. Because the source datasets do not contain experimentally paired magnetic measurements and degradation trajectories for the same cells, these tasks do not measure detection of physical magnetic ageing, and their performance should not be interpreted as real-world SOH-estimation accuracy. 
+T3 distinguishes clean grounded samples, synthetic sensor
+anomalies, and Regime-B samples, while T4 classifies
+the four synthetic sensor-anomaly subtypes. Neither task
+establishes the ability to detect or classify real battery
+or sensor faults.
+
+\subsection*{Limitations users should be aware of}
+
+The dataset is synthetic and should be interpreted according to the
+assumptions of the bridge. The magnetic morphology bank is derived from
+measurements of a single physical cell in the OSF archive, so inter-cell
+variation in the underlying magnetic morphology is not represented directly.
+Moreover, the magnetic-morphology and electrochemical-conditioning sources
+are independent and are not chemistry matched: LFP in this release denotes the PulseBat conditioning population and should not be interpreted as the
+chemistry of the OSF magnetic source or of experimentally measured
+MagBridge signatures. Consequently, the imposed SOH-conditioned morphology
+changes have not been validated as physical magnetic ageing trajectories. SOH is used here as a scalar conditioning variable and does not uniquely
+encode degradation mechanism or ageing history; cells with similar SOH
+values may therefore represent different underlying degradation pathways.
+
+Several construction-specific limitations should also be considered. The
+morphology bank is small, and the fitted latent perturbation direction is
+not physically unique or mechanistically causal; alternative-direction and
+representation ablations are reported in Technical Validation. The bridge
+applies per-channel noise independently, leaving residual differences
+between synthetic and real cross-channel correlation structure at the
+grounded anchors. The \texttt{time\_norm} axis is a constant reference grid
+and carries no per-sample timing information. The source channels
+\texttt{B\_s1C5} and \texttt{B\_s2C6} are signed and should not be
+interpreted as strict physical magnitudes. Synthetic sensor anomalies are
+controlled benchmark perturbations rather than experimentally calibrated
+fault distributions for a specific magnetometer.
+
+Because the SOH-conditioned morphology is generated through a synthetic
+conditioning procedure, models trained exclusively on MagBridge-Battery may
+learn characteristics of the bridge itself, including its interpolation,
+decoding, scaling, and noise structure, rather than physically meaningful
+magnetic degradation mechanisms. Predictive performance on the released
+benchmark should therefore be interpreted as evidence that a method can
+recover the imposed conditioning structure under the documented bridge
+assumptions, and not as evidence of real-world battery diagnostic accuracy.
+
+The full-scale mechanism-knockout experiments further
+demonstrate that recovery of the imposed SOH labels
+depends predominantly on the synthetic morphology-decoding
+and blending pathway. Disabling SOH-dependent blending
+substantially reduced predictive performance, whereas
+removing latent displacement alone preserved substantial
+recoverability. Alternative perturbation directions
+also retained predictive information. These results
+show that benchmark performance does not uniquely
+validate the fitted LDA direction or establish a
+physically calibrated relationship between magnetic
+morphology and battery degradation. Users should
+therefore distinguish recovery of synthetically imposed
+conditioning from prediction of experimentally
+measured magnetic ageing.
+
+The dataset is intended for reproducible benchmarking and method development,
+not for safety-critical battery decisions or direct estimation of performance
+on real magnetic ageing measurements. Every sample carries its generating
+provenance, including operating voltage, SOC, SOH where applicable,
+conditioning cell, seed, regime, anomaly fields, and bridge configuration
+hash, supporting reproducible analysis and future comparison with paired
+measurements.
+
+\section*{Data Availability}
+The MagBridge-Battery dataset is available from Zenodo~\cite{gunasekar2026magbridge_dataset} at \url{https://doi.org/10.5281/zenodo.20260147}.
+
+\section*{Code Availability}
+
+The bridge implementation, generation scripts, benchmark suite, and unit
+tests are openly available on GitHub at
+\url{https://github.com/SakthiGs/MagBridge-Battery} under the Apache-2.0
+licence. The repository includes the code used to generate
+MagBridge-Battery, the OSF-derived artifacts required to run the
+bridge, a minimal loader script (\texttt{load\_example.py}), and benchmark
+scripts for reproducing the reference values reported in
+Table~\ref{tab:baseline}.
+
+The controlled bridge-regeneration experiments reported
+in Technical Validation use separate analysis scripts
+and a fixed experimental protocol. These experiments
+include SOH-label shuffling, alternative-direction
+controls, mechanism knockouts, grouped cross-validation,
+and cone-orientation diagnostics. The experimental
+configuration, input provenance, random seeds, and
+evaluation procedures are documented to distinguish
+these analyses from the reference benchmarks performed
+on the frozen dataset release.
+
+The reproducibility archive contains the experimental
+protocols, analysis scripts, software environment records, input checksums, random seeds, per-configuration predictions, evaluation metrics, and bootstrap outputs for the additional validation experiments. These materials support independent
+inspection of the reported results and distinguish the controlled regeneration experiments from the reference benchmarks performed on the frozen dataset release.
+
+
+Supporting analysis materials for the controlled
+validation experiments, including configurations,
+random seeds, per-configuration predictions,
+evaluation metrics, and bootstrap outputs, are
+publicly available at
+\url{https://github.com/SakthiGs/MagBridge-Battery/releases/tag/validation-evidence-2026-11-11}.
+
+The software was tested with Python 3.10--3.12 and uses standard
+scientific-Python libraries including NumPy, pandas, scikit-learn, and
+PyArrow. The reservoir encoder uses PennyLane, and the neural reference
+baselines use PyTorch. The released configuration file records the bridge
+hyperparameters, and the generated dataset records the corresponding bridge
+configuration hash.
+
+The default test discovery collects 196 test items. Two tests marked as
+slow are deselected by the repository's default pytest configuration;
+among the remaining 194 selected tests, a clean public-repository run
+reports 163 passed and 31 skipped. Tests requiring unavailable raw
+upstream files are skipped automatically.
+
+% =====================================================================
+% REFERENCES  — INLINE, NO .BIB, Nature style with DOIs
+% =====================================================================
+\begin{thebibliography}{99}
+
+\bibitem{severson2019}
+Severson, K.~A. \emph{et al.} Data-driven prediction of battery cycle life before capacity degradation. \emph{Nat. Energy} \textbf{4}, 383--391 (2019). \url{https://doi.org/10.1038/s41560-019-0356-8}
+
+\bibitem{tao2024pulsebat}
+Tao, S. \emph{et al.} Generative learning assisted state-of-health estimation for sustainable battery recycling with random retirement conditions. \emph{Nat. Commun.} \textbf{15}, 10154 (2024). \url{https://doi.org/10.1038/s41467-024-54454-0}
+
+\bibitem{tao2024pulsebatdata}
+Tao, S. \& Ma, G. Pulse Voltage Response Generation:
+TBSI-Lijing Battery Dataset (v3). Zenodo (2024).
+\url{https://doi.org/10.5281/zenodo.13360631}
+
+\bibitem{braco2022secondlife}
+Braco, E., San Mart\'in, I., Sanchis, P., Urs\'ua, A. \& Stroe, D.-I.
+State of health estimation of second-life lithium-ion batteries under
+real profile operation.
+\emph{Appl. Energy} \textbf{326}, 119992 (2022).
+\url{https://doi.org/10.1016/j.apenergy.2022.119992}
+
+% [5]
+\bibitem{camboim2024secondlife}
+Camboim, M. M. et al.
+State of health estimation of second-life batteries through
+electrochemical impedance spectroscopy and dimensionality reduction.
+\emph{J. Energy Storage} \textbf{78}, 110063 (2024).
+\url{https://doi.org/10.1016/j.est.2023.110063}
+
+% NEW [6]
+\bibitem{wang2026hybrid}
+Wang, S., Hu, B., Zhang, Q., Dang, Q. \& Fernandez, C.
+Critical review on improved hybrid deep learning modeling strategies for
+online battery state of charge estimation in large-scale energy storage systems.
+\emph{J. Power Sources} \textbf{673}, 239714 (2026).
+\url{https://doi.org/10.1016/j.jpowsour.2026.239714}
+
+% NEW [7]
+\bibitem{wang2025hlhgur}
+Wang, S., Wei, J., Zhang, L., Li, H., Fernandez, C. \& Blaabjerg, F.
+Improved harmonic loss--History gated unit recycling for online state of
+charge and state of energy co-estimation of lithium-ion batteries for
+large-scale energy storage stations.
+\emph{Energy} \textbf{340}, 139225 (2025).
+\url{https://doi.org/10.1016/j.energy.2025.139225}
+
+% NEW [8]
+\bibitem{wang2025bilstm}
+Wang, S., Ma, C., Gao, H., Deng, D., Fernandez, C. \& Blaabjerg, F.
+Improved hyperparameter Bayesian optimization-bidirectional long short-term
+memory optimization for high-precision battery state of charge estimation.
+\emph{Energy} \textbf{328}, 136598 (2025).
+\url{https://doi.org/10.1016/j.energy.2025.136598}
+
+\bibitem{ilott2018}
+Ilott, A.~J., Mohammadi, M., Schauerman, C.~M., Ganter, M.~J. \& Jerschow, A.
+Rechargeable lithium-ion cell state of charge and defect detection by in-situ
+inside-out magnetic resonance imaging.
+\emph{Nat. Commun.} \textbf{9}, 1776 (2018).
+\url{https://doi.org/10.1038/s41467-018-04192-x}
+
+\bibitem{romanenko2020}
+Romanenko, K., Kuchel, P.~W. \& Jerschow, A.
+Accurate visualization of operating commercial batteries using specialized
+magnetic resonance imaging with magnetic field sensing.
+\emph{Chem. Mater.} \textbf{32}, 2107--2113 (2020).
+\url{https://doi.org/10.1021/acs.chemmater.9b05238}
+
+\bibitem{hu2020}
+Hu, Y. \emph{et al.}
+Sensitive magnetometry reveals inhomogeneities in charge storage and weak
+transient internal currents in Li-ion cells.
+\emph{Proc. Natl. Acad. Sci. USA} \textbf{117}, 10667--10672 (2020).
+\url{https://doi.org/10.1073/pnas.1917172117}
+
+\bibitem{ilott2017}
+Ilott, A.~J. \& Jerschow, A.
+Super-resolution surface microscopy of conductors using magnetic resonance.
+\emph{Sci. Rep.} \textbf{7}, 5425 (2017).
+\url{https://doi.org/10.1038/s41598-017-05878-w}
+
+\bibitem{nature2025magnetic}
+Pollok, S. \emph{et al.}
+Magnetic microscopy for operando imaging of battery dynamics.
+\emph{Nat. Commun.} \textbf{16}, 8303 (2025).
+\url{https://doi.org/10.1038/s41467-025-63409-y}
+
+\bibitem{aachen2025}
+Evans, W. \emph{et al.}
+Quantum magnetic imaging of current density in lithium-ion batteries.
+Preprint at \url{https://arxiv.org/abs/2512.01125} (2025).
+
+\bibitem{qualiprom}
+Fraunhofer IFAM.
+Quantum technology and AI: the key to safe second-life applications for
+lithium-ion batteries.
+Press release (30 January 2025).
+\url{https://www.ifam.fraunhofer.de/en/Press_Releases/quantum-technology-and-AI-second-life-applications-lithium-ion-batteries.html}
+
+\bibitem{mohammadi2020osf}
+Mohammadi, M. \& Jerschow, A.
+Battery Magnetometry Data 2019--2020.
+Open Science Framework (2020).
+\url{https://doi.org/10.17605/OSF.IO/CW8ZV}
+
+\bibitem{fujii2017qrc}
+Fujii, K. \& Nakajima, K.
+Harnessing disordered-ensemble quantum dynamics for machine learning.
+\emph{Phys. Rev. Appl.} \textbf{8}, 024030 (2017).
+\url{https://doi.org/10.1103/PhysRevApplied.8.024030}
+
+\bibitem{silva2012sensorfault}
+da Silva, J.~C., Saxena, A., Balaban, E. \& Goebel, K.
+A knowledge-based system approach for sensor fault modeling, detection and
+mitigation.
+\emph{Expert Syst. Appl.} \textbf{39}, 10977--10989 (2012).
+\url{https://doi.org/10.1016/j.eswa.2012.03.026}
+
+\bibitem{janosek2019magnetic}
+Jano\v{s}ek, M., Dressler, M., Petrucha, V. \& Chirtsov, A.
+Magnetic calibration system with interference compensation.
+\emph{IEEE Trans. Magn.} \textbf{55}, 1--4 (2019).
+\url{https://doi.org/10.1109/TMAG.2018.2874169}
+
+\bibitem{gunasekar2026magbridge_dataset}
+Gunasekar, S. P. \& Rangarajan, P. K.
+MagBridge-Battery: A synthetic magnetic-signature dataset with
+electrochemical degradation labels for lithium-ion batteries (v1.0).
+Zenodo (2026).
+\url{https://doi.org/10.5281/zenodo.20260147}
+
+\end{thebibliography}
+
+\section*{Author Contributions}
+
+S.P.G. designed and implemented the bridge, generated the dataset, carried
+out the technical validation and benchmarking, and drafted the manuscript.
+P.K.R. supervised the project and contributed to revising the manuscript.
+Both authors reviewed and approved the final manuscript.
+
+\section*{Competing Interests}
+
+The authors declare no competing interests.
 
 \section*{Acknowledgements}
 
-The authors thank the Mohammadi--Jerschow group for openly releasing the OSF battery magnetometry archive, which made this work possible. We also thank Prof. Alexej Jerschow for helpful clarification regarding the public OSF dataset. The authors further thank the PulseBat team (Tao et al.) for releasing pulse-voltage response data on retired Li-ion cells. Any errors or interpretations in this work remain the responsibility of the authors.
+The authors thank the Mohammadi--Jerschow group for openly releasing the
+OSF battery magnetometry archive, and Prof. Alexej Jerschow for confirming
+reuse of the archive with citation. The authors also thank the PulseBat team
+for openly releasing the retired-cell pulse-test dataset used as the
+electrochemical-conditioning source in this work.
 
-%==============================================================================
-\appendix
-\section{Bridge degradation modulator: full equations}
-\label{app:archmath}
+\section*{Funding}
 
-For completeness we list the equations referenced in \S\ref{sec:arch:modulator}. The morphology bank produces a base sample at voltage $v$ by linear interpolation between bracketing anchors $v_l \leq v \leq v_h$:
-\begin{equation}
-    \boldsymbol{\mu}(v) = (1-\alpha)\,\boldsymbol{\mu}_{v_l} + \alpha\,\boldsymbol{\mu}_{v_h}, \quad \alpha = \frac{v - v_l}{v_h - v_l}
-\end{equation}
-\begin{equation}
-    \boldsymbol{\sigma}(v) = \sqrt{(1-\alpha)\,\boldsymbol{\sigma}_{v_l}^2 + \alpha\,\boldsymbol{\sigma}_{v_h}^2}
-\end{equation}
-\begin{equation}
-    \mathbf{X}_{\text{base}} = \boldsymbol{\mu}(v) + \boldsymbol{\sigma}(v) \odot \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(0, I)
-\end{equation}
-The degradation modulator computes the MagBridge-Embed of the base sample, projects to LDA space:
-\begin{equation}
-    \mathbf{z}_{\text{base}} = (\boldsymbol{\Sigma}^{-1/2}(\mathbf{e}_{\text{base}} - \boldsymbol{\mu}_e) - \bar{\mathbf{x}}) \mathbf{W}_{\text{LDA}}
-\end{equation}
-perturbs along the fitted state direction $\hat{\mathbf{d}}$:
-\begin{equation}
-    \mathbf{z}_{\text{pert}} = \mathbf{z}_{\text{base}} + m \cdot \hat{\mathbf{d}}, \quad m = -\gamma \cdot \delta, \quad \delta = \max(0, 1 - \text{SOH})
-\end{equation}
-decodes via cone-restricted $k$-NN softmin:
-\begin{equation}
-    \mathbf{X}_{\text{decode}} = \sum_{i \in \mathcal{N}_k} w_i \cdot \mathbf{X}_i^{\text{OSF}}, \quad w_i = \frac{\exp(-d_i / \tau)}{\sum_j \exp(-d_j / \tau)}
-\end{equation}
-and blends with the base proportionally to $\delta$:
-\begin{equation}
-    \mathbf{X}_{\text{mod}} = (1 - \beta)\,\mathbf{X}_{\text{base}} + \beta\,\mathbf{X}_{\text{decode}}, \quad \beta = \min(1, 1.5\delta)
-\end{equation}
-with v1.0 release configuration $\gamma = 800$, $k=8$, $\tau = 50$, cone half-angle $75^\circ$. The bridge configuration is pinned by hash in the released manifest.
-
-%==============================================================================
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+The authors received no external funding for this work.
 
 \end{document}
