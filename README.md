@@ -59,6 +59,22 @@ The Zenodo bundle is self-contained — it includes a `load_example.py` if you o
 
 ---
 
+## Additional validation evidence
+
+Supporting materials for the controlled validation experiments reported in the revised *Scientific Data* manuscript are available in a versioned GitHub release:
+
+[MagBridge-Battery — Round 2 Reproducibility Evidence](https://github.com/SakthiGs/MagBridge-Battery/releases/tag/validation-evidence-2026-11-11)
+
+The archive contains experimental configurations, random seeds, per-configuration predictions, evaluation metrics, bootstrap outputs, and supporting analysis scripts. It **does not include the complete kernel-PCA or autoencoder execution implementations**, so it should not be treated as a complete execution package for every reported experiment.
+
+The validation evidence supplements the reference benchmarks. The frozen MagBridge-Battery v1.0 dataset on Zenodo remains unchanged.
+
+### Source-data clarification
+
+MagBridge-Battery combines experimentally measured magnetic morphology from an NMC pouch cell in the OSF source archive with independent SOH and SOC conditioning records from retired LFP cells in PulseBat. These sources are **not experimentally paired**, and the generated signals should not be interpreted as measured magnetic ageing trajectories.
+
+---
+
 ## What's in this repo
 
 ```
