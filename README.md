@@ -25,17 +25,17 @@ cd MagBridge-Battery
 
 # Get the dataset from Zenodo (one-time, ~40MB):
 mkdir -p data
-wget https://zenodo.org/records/20260147/files/magbridge_battery_v1_0_release.zip
-unzip magbridge_battery_v1_0_release.zip -d data/
+wget https://zenodo.org/records/20260147/files/magbridge_battery_v1_0_FINAL.zip
+unzip magbridge_battery_v1_0_FINAL.zip -d data/
 # After this, you should have data/data/shard_*.parquet and data/splits/*.json
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the classical benchmark (Table III in the paper)
+# Run the classical benchmark (Table 3: classical reference baselines)
 python3 code/run_benchmark.py --data-dir ./data
 
-# Run the deep-learning benchmark (Table IV), one task at a time
+# Run the deep-learning benchmark (Table 3: neural reference baselines), one task at a time
 python3 code/run_dl_bench_lean.py t1 --data-dir ./data   # SOH regression
 python3 code/run_dl_bench_lean.py t2 --data-dir ./data   # Second-life classification
 python3 code/run_dl_bench_lean.py t3 --data-dir ./data   # Anomaly detection (3-class)
@@ -84,8 +84,8 @@ MagBridge-Battery/
 │   ├── magbridge_battery.pdf
 │   └── references.bib
 ├── code/                               Code
-│   ├── run_benchmark.py                Classical-ML benchmark (Table III)
-│   ├── run_dl_bench_lean.py            Deep-learning benchmark (Table IV)
+│   ├── run_benchmark.py                Classical-ML benchmark (Table 3)
+│   ├── run_dl_bench_lean.py            Deep-learning benchmark (Table 3)
 │   └── bridge/                         The bridge implementation
 │       ├── magbridge/                  Python package (3,731 LOC)
 │       ├── tests/                      194 unit tests
@@ -109,25 +109,27 @@ MagBridge-Battery/
 
 ## Reproducing the paper's numbers
 
-All numbers in the paper come from the scripts in `code/`. To reproduce:
+The repository provides executable scripts for the classical and deep-learning reference benchmarks reported in Table 3. Supporting materials for additional controlled bridge-regeneration experiments are available in the versioned validation-evidence release linked above, including recorded configurations, predictions, evaluation metrics, and supporting analysis materials. Not every analysis in the manuscript can be reproduced by the reference benchmark scripts alone.
 
-**Table III (classical baselines):**
+To run the reference benchmarks:
+
+**Table 3 (classical reference baselines):**
 ```bash
 python3 code/run_benchmark.py
 ```
 Expected output: T1 R² ≈ 0.675, T2 bal_acc ≈ 0.907, T3 bal_acc ≈ 0.789, T4 bal_acc ≈ 0.725 (within seed variance).
 Time: ~5 minutes on a laptop CPU.
 
-**Table IV (deep-learning baselines):**
+**Table 3 (deep-learning reference baselines):**
 ```bash
 for task in t1 t2 t3 t4; do
   python3 code/run_dl_bench_lean.py $task
 done
 ```
-Expected output: best DL per task as reported in Table IV.
+Expected output: best DL per task as reported in Table 3.
 Time: ~25 minutes on a laptop CPU; ~5 minutes on a Colab T4 GPU.
 
-Both scripts use the same `by_cell_primary` cell-disjoint split as defined in the paper, with the same feature extraction pipeline. Seed variation is bounded by repeated cell-subsampling (each seed sees a different 80% of the training cells).
+Both reference benchmark scripts use the same `by_cell_primary` cell-disjoint train/test split. For each seed, each script selects 80% of eligible training rows without replacement; it does not subsample physical training cells. The held-out conditioning-cell test set remains fixed. The classical benchmark uses 57 engineered features, whereas the neural benchmark uses the six-channel, length-100 signal arrays.
 
 ---
 
@@ -178,7 +180,7 @@ MagBridge-Battery does not redistribute raw upstream data. See the LICENSE file 
 ## Issues, questions, contributions
 
 - **Bug in the data or paper?** Open an issue on GitHub or email the authors (see the paper or CITATION.cff).
-- **Want to contribute a benchmark result or method?** Open an issue or PR. Method submissions that beat the Table III / Table IV baselines are particularly welcome.
+- **Want to contribute a benchmark result or method?** Open an issue or PR. Method submissions that improve on the Table 3 reference baselines are particularly welcome.
 - **Want to use the dataset commercially?** CC-BY-4.0 permits this; please cite the paper and dataset DOI per [How to cite](#how-to-cite) above.
 
 ---
