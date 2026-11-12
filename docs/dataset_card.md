@@ -2,7 +2,7 @@
 
 ## Summary
 
-MagBridge-Battery is a synthetic dataset of magnetic-field time-series signatures for lithium iron phosphate (LFP) cells. It is produced by a bridging procedure that conditions the magnetometry waveforms from the **Mohammadi–Jerschow OSF archive** on electrochemical state labels (voltage, SOC, SOH, chemistry) drawn from the **PulseBat** dataset. The result is a labelled corpus suitable for benchmarking sequence models on battery state estimation, anomaly detection, and out-of-distribution extrapolation.
+MagBridge-Battery v1.0 is a synthetic benchmark of magnetic-field time-series signatures. Its magnetic-morphology scaffold is derived from measurements of a single NMC pouch cell in the **Mohammadi–Jerschow OSF archive**. Independent SOH, SOC, and pulse-voltage conditioning records are obtained from retired LFP cells in **PulseBat**. The sources are **not experimentally paired**; the generated signals are not experimentally measured magnetic ageing trajectories of LFP cells. The release supports reproducible evaluation of imposed SOH conditioning, controlled sensor anomalies, and low-voltage out-of-distribution cases.
 
 - **Version**: 1.0
 - **Schema**: 1.0
@@ -152,7 +152,7 @@ A model trained on this split will appear artificially strong. **Do not report i
 - SOH regression on Regime-B samples (`soh` is NaN by design).
 - Treating `B_s1C5` / `B_s2C6` as physical magnitudes.
 - Treating `time_norm` as per-sample timing information.
-- Cross-chemistry transfer claims — only LFP is represented.
+- Cross-chemistry transfer or physically validated magnetic ageing claims: the OSF NMC morphology source and PulseBat LFP conditioning source are independent and not experimentally paired.
 
 ## Known caveats
 
