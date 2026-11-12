@@ -744,8 +744,8 @@ the operating voltage; \texttt{NaN} for extrapolation-regime samples. \\
 True for synthetic sensor anomalies and extrapolation-regime samples;
 the field therefore denotes departure from the clean grounded subset,
 not exclusively a sensor fault. \\
-\texttt{anomaly\_subtype}    & string  & One of four subtypes, or null. \\
-\texttt{anomaly\_origin}     & string  & Provenance tag for the anomaly perturbation. \\
+\texttt{anomaly\_subtype} & string & \texttt{none} for clean grounded samples; \texttt{sensor\_dropout}, \texttt{calibration\_drift}, \texttt{temporal\_warp}, or \texttt{periodic\_interference} for synthetic sensor anomalies; \texttt{low\_voltage\_regime\_B} for Regime-B. \\
+\texttt{anomaly\_origin} & string & \texttt{none} for clean grounded samples; \texttt{synthetic\_sensor\_perturbation} for synthetic anomalies; \texttt{bridge\_extrapolation} for Regime-B. \\
 \texttt{anomaly\_severity}   & float   & Perturbation severity for anomalies. \\
 \bottomrule
 \end{tabularx}
